@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Chocolate</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4b2e0d;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      max-width: 620px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4b2e0d;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #6a4011;
+    }
+
+    @media (max-width: 500px) {
+      form {
+        padding: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Add New Chocolate</h1>
+  <form method="POST" action="/chocolate/new">
+    <input type="text" name="image" placeholder="Image URL" required />
+    <input type="text" name="name" placeholder="Name" required />
+    <input type="number" name="MRP" placeholder="MRP" required />
+    <input type="number" name="rate" placeholder="Rate" required />
+    <input type="text" name="total_weight" placeholder="Total Weight" required />
+    <input type="number" name="available_jar" placeholder="Available Jars" required />
+    <button type="submit">Add</button>
+  </form>
+</body>
+</html>

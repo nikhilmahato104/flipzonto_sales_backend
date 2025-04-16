@@ -1,0 +1,10 @@
+see this backend structure , now i want to make a admin panel of flipzonto  that sold the bulk product to the shop.       
+ make model route view server.js   with all node,express,mongodb atlas. i have total 10 product catogary each catogary have diffrent
+  schema i want to build first chocalate schema  model route  where admin can apply CRUD operation   in cholate schema in fronted pages 
+   cholalate.jsx   fetch api that show all cholate products that save on db,   in schema   first image ,cholactale name,  MRP ,  total
+    weight,    aviable_jar   store.      that date store on mongodb atlas .and my frontend one pages  chocolatepages.jsx  
+     fetch all data that is upolated by admin in the mongodb fetch  and frontend when user order like if 10 jar is avilabe
+      an user order 5 jar 5 jar will also remove from database means aviable_jar 's quintity remove ok. make accorndly like
+       real life B2B project     .   admin can add as much require product they can add new product in chololate model,view,route 
+       ,admin set price modify price, admin can modify quentity all thing that change in the database and also frontend fetch that data. 
+       use ejs give me aslo file structure.
