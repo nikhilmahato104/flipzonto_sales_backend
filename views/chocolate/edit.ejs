@@ -58,11 +58,9 @@
   <form method="POST" action="/chocolate/edit/<%= chocolate._id %>">
     <input type="text" name="image" value="<%= chocolate.image %>" placeholder="Image URL" required />
     <input type="text" name="name" value="<%= chocolate.name %>" placeholder="Name" required />
-    <input type="number" name="MRP" value="<%= chocolate.MRP %>" placeholder="MRP" required />
-    <input type="text" name="total_weight" value="<%= chocolate.total_weight %>" placeholder="Total Weight" required />
+    <input type="number" name="MRP" value="<%= chocolate.MRP.toFixed(2) %>" placeholder="MRP" step="0.01" required />    <input type="text" name="total_weight" value="<%= chocolate.total_weight %>" placeholder="Total Weight" required />
     <input type="number" name="available_jar" value="<%= chocolate.available_jar %>" placeholder="Available Jars" required />
-    <input type="number" name="rate" value="<%= chocolate.rate %>" placeholder="Rate" required />
-    <button type="submit">Update</button>
+    <input type="number" name="rate" value="<%= chocolate.rate.toFixed(2) %>" placeholder="Rate" step="0.01" required />    <button type="submit">Update</button>
   </form>
 </body>
 </html>
