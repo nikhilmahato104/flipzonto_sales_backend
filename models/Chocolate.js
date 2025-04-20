@@ -20,12 +20,12 @@ const chocolateSchema = new mongoose.Schema({
   MRP: {
     type: Number,
     required: true,
-    set: roundTwo // 👈 This will round to 2 decimal places on save
+    set: roundTwo //  This will round to 2 decimal places on save
   },
   rate: {
     type: Number,
     required: true,
-    set: roundTwo // 👈 Also rounds here
+    set: roundTwo //  Also rounds here
   },
   total_weight: { type: String, required: true },
   available_jar: { type: Number, required: true }
