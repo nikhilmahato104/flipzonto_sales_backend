@@ -175,7 +175,13 @@ mongoose.connect(process.env.MONGO_URI, {
 //   methods: ['GET', 'POST', 'PUT'],
 //   credentials: true
 // }));
-const allowedOrigins = ['https://flipzonto.com', 'http://localhost:5173'];
+const allowedOrigins = [
+  'https://flipzonto.com',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173', // often used too
+  'http://localhost:3000'
+];
+
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -194,23 +200,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ Sessions
+// Sessions
 app.use(session({
   secret: process.env.SESSION_SECRET || 'supersecretkey',
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: {
-    maxAge: 1000 * 60 * 60, // 1 hour
-    secure: false // set true only if HTTPS
+    maxAge: 1000 * 60 * 60, 
+    secure: false 
   }
 }));
 
-// ✅ View Engine
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// ✅ Nodemailer setup
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -219,19 +225,19 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// ✅ Login Page
+
 app.get('/login', (req, res) => {
   res.render('login');
 });
 
-// ✅ Login Handler with OTP
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
 
-  if (!admin) return res.send('❌ Invalid email or password');
+  if (!admin) return res.send(' Invalid email or password');
   const isMatch = await bcrypt.compare(password, admin.password);
-  if (!isMatch) return res.send('❌ Invalid email or password');
+  if (!isMatch) return res.send('Invalid email or password');
 
   const otp = Math.floor(100000 + Math.random() * 900000);
   req.session.tempAuth = true;
@@ -259,15 +265,15 @@ app.post('/login', async (req, res) => {
       html: htmlMessage
     });
 
-    console.log('✅ OTP sent');
+    console.log(' OTP sent');
     res.render('otp');
   } catch (err) {
-    console.error('❌ Failed to send OTP:', err.message);
-    res.send('❌ Failed to send OTP. Please try again.');
+    console.error('Failed to send OTP:', err.message);
+    res.send('Failed to send OTP. Please try again.');
   }
 });
 
-// ✅ OTP Verification
+
 app.post('/verify-otp', (req, res) => {
   const { otp } = req.body;
 
@@ -283,7 +289,7 @@ app.post('/verify-otp', (req, res) => {
   });
 });
 
-// ✅ Logout
+
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) console.log(err);
@@ -291,15 +297,15 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// ✅ Admin Dashboard (protected)
+
 app.get('/', authMiddleware, (req, res) => {
   res.render('adminDashboard');
 });
 
-// ✅ Chocolate routes (API + Admin routes)
+
 app.use('/chocolate', chocolateRoutes);
 
-// ✅ Start Server
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
