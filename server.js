@@ -178,9 +178,11 @@ mongoose.connect(process.env.MONGO_URI, {
 const allowedOrigins = [
   'https://flipzonto.com',
   'http://localhost:5173',
-  'http://127.0.0.1:5173', // often used too
-  'http://localhost:3000'
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'https://b-to-b-apixvuzum.onrender.com' // ✅ added this
 ];
+
 
 
 app.use(cors({
