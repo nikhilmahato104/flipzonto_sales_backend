@@ -171,8 +171,9 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // ✅ Middleware Setup
 app.use(cors({
-  origin: 'https://flipzonto.com', // Allow only requests from your frontend domain
+  origin: 'https://flipzonto.com', // Only allow frontend site
   methods: ['GET', 'POST', 'PUT'],
+  credentials: true
 }));
 
 app.use(express.urlencoded({ extended: true }));
@@ -186,7 +187,8 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: {
-    maxAge: 1000 * 60 * 60 // 1 hour
+    maxAge: 1000 * 60 * 60, // 1 hour
+    secure: false // set true only if HTTPS
   }
 }));
 
@@ -214,7 +216,6 @@ app.post('/login', async (req, res) => {
   const admin = await Admin.findOne({ email });
 
   if (!admin) return res.send('❌ Invalid email or password');
-
   const isMatch = await bcrypt.compare(password, admin.password);
   if (!isMatch) return res.send('❌ Invalid email or password');
 
@@ -230,11 +231,9 @@ app.post('/login', async (req, res) => {
   const htmlMessage = `
     <div style="font-family: 'Segoe UI', sans-serif; max-width: 500px; margin: auto; padding: 1.5rem; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
       <h2 style="color: #1e3a8a;">🔐 Flipzonto Admin OTP</h2>
-      <p style="font-size: 16px;">Your One-Time Password (OTP) for login is:</p>
-      <p style="font-size: 24px; font-weight: bold; color: #d00000;">${otp}</p>
-      <p style="font-size: 14px; color: #555;">Date & Time: ${formattedDate}</p>
-      <hr style="margin: 1.5rem 0;">
-      <p style="font-size: 14px; color: #888;">If you face any issues, please contact developer <strong>Nikhil Mahato</strong> or the team at <strong>FreelancerPro, INDIA</strong>.</p>
+      <p>Your OTP is:</p>
+      <h1 style="color: red;">${otp}</h1>
+      <p style="color: gray;">Date: ${formattedDate}</p>
     </div>
   `;
 
@@ -246,7 +245,7 @@ app.post('/login', async (req, res) => {
       html: htmlMessage
     });
 
-    console.log('✅ OTP sent to both admins');
+    console.log('✅ OTP sent');
     res.render('otp');
   } catch (err) {
     console.error('❌ Failed to send OTP:', err.message);
@@ -278,12 +277,12 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// ✅ Admin Dashboard
+// ✅ Admin Dashboard (protected)
 app.get('/', authMiddleware, (req, res) => {
   res.render('adminDashboard');
 });
 
-// ✅ Routes (admin + public API inside)
+// ✅ Chocolate routes (API + Admin routes)
 app.use('/chocolate', chocolateRoutes);
 
 // ✅ Start Server
