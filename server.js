@@ -170,11 +170,25 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(err => console.error('❌ DB Error:', err));
 
 // ✅ Middleware Setup
+// app.use(cors({
+//   origin: 'https://flipzonto.com', // Only allow frontend site
+//   methods: ['GET', 'POST', 'PUT'],
+//   credentials: true
+// }));
+const allowedOrigins = ['https://flipzonto.com', 'http://localhost:5173'];
+
 app.use(cors({
-  origin: 'https://flipzonto.com', // Only allow frontend site
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed for this origin'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT'],
   credentials: true
 }));
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
