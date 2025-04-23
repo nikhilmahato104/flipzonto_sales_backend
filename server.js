@@ -180,6 +180,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
+  'http://localhost:3001',
   'https://b-to-b-apixvuzum.onrender.com',
   'https://fzt-api-frilu457.onrender.com'
 
@@ -307,10 +308,10 @@ app.get('/', authMiddleware, (req, res) => {
 });
 
 
+app.use(chocolateRoutes); 
 app.use('/chocolate', chocolateRoutes);
 
-
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

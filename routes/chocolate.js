@@ -13,25 +13,35 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// 🔓 PUBLIC ROUTE: Place chocolate order
+// ✅ ✅ ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅ ✅ ✅
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
-    const chocolate = await Chocolate.findById(req.params.id);
 
+    // Validate quantity
+    if (!qty || isNaN(qty) || qty <= 0) {
+      return res.status(400).json({ message: 'Invalid quantity provided' });
+    }
+
+    // Find chocolate by ID
+    const chocolate = await Chocolate.findById(req.params.id);
     if (!chocolate) {
       return res.status(404).json({ message: 'Chocolate not found' });
     }
 
+    // Check if enough stock is available
     if (chocolate.available_jar < qty) {
       return res.status(400).json({ message: 'Not enough stock' });
     }
 
+    // Update the stock
     chocolate.available_jar -= qty;
     await chocolate.save();
 
-    res.json({ message: 'Order placed successfully!', updated: chocolate });
+    // Respond with the updated stock info
+    res.json({ message: 'Stock updated successfully!', updated: chocolate });
   } catch (err) {
+    console.error('❌ PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
