@@ -1,0 +1,92 @@
+<div class="salesman-form">
+    <h2>Add NEW Salesman Admin</h2>
+    <form action="/salesman/add" method="POST">
+        <input type="text" name="salesman_name" placeholder="Add New Salesman Name" required>
+        <input type="password" name="password" placeholder="Add New Password" required>
+        <button type="submit" class="btn">Add Salesman</button>
+    </form>
+
+    <!-- Refresh Button -->
+   
+</div>
+
+
+
+
+
+
+<style>
+    /* Refresh Button Styling */
+.refresh-btn {
+    margin-top: 15px;
+    background-color: #d62828; /* Red color for distinction */
+}
+
+.refresh-btn:hover {
+    background-color: #a41f1f; /* Darker red on hover */
+}
+
+/* Full Page Centering */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    margin: 0;
+    background-color: #f0f7ff;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Form Container */
+.salesman-form {
+    width: 90%; /* Adjust width for mobile */
+    max-width: 600px; /* Ensures it's not too wide on large screens */
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+/* Heading */
+.salesman-form h2 {
+    color: #1e3a8a;
+    font-size: 1.6rem; /* Increased size */
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Input Fields */
+.salesman-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Button Styling */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #1e3a8a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #16307a;
+}
+
+
+</style>
