@@ -10,7 +10,9 @@ const cors = require('cors');
 
 const Admin = require('./models/Admin');
 const chocolateRoutes = require('./routes/chocolate');
+
 const authMiddleware = require('./middleware/auth');
+const Order = require('./models/Order');  // Import Order model
 
 const app = express();
 
@@ -170,6 +172,52 @@ app.use('/salesman-auth', salesmanAuthRoutes);
 
 app.use(chocolateRoutes); 
 app.use('/chocolate', chocolateRoutes);
+
+// Order Route
+app.post("/api/orders", async (req, res) => {
+  try {
+    const orderDetails = req.body; // Get order details from request body
+
+    // Create a new order
+    const newOrder = new Order(orderDetails);
+
+    // Save the order to the database
+    await newOrder.save();
+
+    // Respond with success
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Order Error:", error);
+    res.status(500).json({ success: false, message: 'Error placing the order. Please try again.' });
+  }
+});
+
+
+app.get('/orderfetchfromDB', async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.render('orderfetchfromDB', { orders }); // render view with fetched orders
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
+app.post('/toggle-shipped/:id', async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).send('Order not found');
+    }
+    order.shipped = !order.shipped; // toggle the status
+    await order.save();
+    res.status(200).json({ success: true, shipped: order.shipped });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
