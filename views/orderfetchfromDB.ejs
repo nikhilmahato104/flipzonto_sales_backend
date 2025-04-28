@@ -25,6 +25,20 @@
       font-size: 16px;
       cursor: pointer;
     }
+
+    .refresh-btn-page {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      position: fixed;
+    }
     .order {
       background: #fff;
       border-radius: 8px;
@@ -133,7 +147,7 @@
     }
 
     
-  async function downloadInvoice(orderId) {
+    async function downloadInvoice(orderId) {
     const { jsPDF } = window.jspdf;
     const orderEl = document.getElementById(`order-${orderId}`);
     if (!orderEl) return;
@@ -141,16 +155,16 @@
     const doc = new jsPDF();
     let y = 10;
 
-    // Add custom heading and paragraph
+    // Header
     doc.setFontSize(18);
     doc.text('Thank you for shopping with FlipZonto', 10, y);
     y += 10;
 
     doc.setFontSize(12);
     doc.text('Verified by Chandan Sharma and Akash Yadav.', 10, y);
-    y += 20; // Adjust space after the paragraph
+    y += 20;
 
-    // Function to add text to the PDF
+    // Helper to add labeled text
     function addText(label, value) {
       doc.text(`${label}: ${value}`, 10, y);
       y += 10;
@@ -165,7 +179,6 @@
     const date = orderEl.querySelector('.shop-info p:nth-of-type(6)')?.textContent || '';
     const status = orderEl.querySelector('.shop-info p:nth-of-type(7)')?.textContent || '';
 
-    // Add order details to the PDF
     addText('Shop', shopName);
     addText('Owner', owner);
     addText('Contact', contact);
@@ -179,31 +192,47 @@
     doc.text('Cart Items:', 10, y);
     y += 10;
 
-    // Add cart items to the PDF
+    // Calculate subtotal
     const rows = Array.from(orderEl.querySelectorAll('tbody tr'));
+    let subtotal = 0;
+
     rows.forEach(row => {
-      const cells = row.querySelectorAll('td');
-      const name = cells[0]?.textContent;
-      const category = cells[1]?.textContent;
-      const rate = cells[2]?.textContent;
-      const qty = cells[3]?.textContent;
-      doc.text(`• ${name} | ${category} | ₹${rate} × ${qty}`, 10, y);
-      y += 8;
-      if (y > 280) {
-        doc.addPage();
-        y = 10;
-      }
+        const cells = row.querySelectorAll('td');
+        const name = cells[0]?.textContent || '';
+        const category = cells[1]?.textContent || '';
+        const rateText = cells[2]?.textContent?.replace(/[₹,]/g, '') || '0';
+        const qtyText = cells[3]?.textContent || '0';
+
+        const rate = parseFloat(rateText);
+        const qty = parseInt(qtyText, 10);
+        const lineTotal = rate * qty;
+
+        subtotal += lineTotal;
+
+        doc.text(`• ${name} | ${category} | ₹${rate} × ${qty} = ₹${lineTotal.toFixed(2)}`, 10, y);
+        y += 8;
+
+        if (y > 280) {
+            doc.addPage();
+            y = 10;
+        }
     });
 
-    // Save the PDF with a dynamic filename
-    doc.save(`${shopName.replace(/\s+/g, '_')}_Invoice.pdf`);
-  }
+    // Show subtotal at end
+    y += 10;
+    doc.setFontSize(14);
+    doc.text(`Subtotal: ₹${subtotal.toFixed(2)}`, 10, y);
+
+    // Save PDF
+    const fileName = `${shopName.replace(/\s+/g, '_')}_Invoice.pdf`;
+    doc.save(fileName);
+}
 
 
   </script>
 </head>
 <body>
-    <button class="refresh-btn" onclick="refreshPage()">Refresh Page 🔄</button>
+    <button class="refresh-btn-page" onclick="refreshPage()">Refresh Page 🔄</button>
 
 
   <h1> All Order details Orders</h1>
