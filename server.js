@@ -15,6 +15,7 @@ const authMiddleware = require('./middleware/auth');
 const Order = require('./models/Order');  // Import Order model
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (like Render, Heroku, Nginx)
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
