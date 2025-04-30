@@ -103,10 +103,7 @@ const loginLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 5, // Limit each IP to 5 requests per windowMs
   message: "Too many login attempts, please try again later.",
-  onLimitReached: (req, res, options) => {
-    // Optionally log the rate limiting error if needed, or leave it empty to suppress the log.
-    // console.log('Rate limit exceeded for IP: ', req.ip);
-  },
+
 });
 
 router.post('/login', loginLimiter, async (req, res) => {
