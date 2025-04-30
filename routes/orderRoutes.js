@@ -17,3 +17,4 @@ app.post("/api/orders", async (req, res) => {
     res.status(500).json({ success: false, message: 'Error placing the order. Please try again.' });
   }
 });
+

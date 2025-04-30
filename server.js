@@ -218,6 +218,26 @@ app.post('/toggle-shipped/:id', async (req, res) => {
   }
 });
 
+// const Order = require("./models/Order");
+
+//this code give give the order of the specific salesman for checking how much order he did.like if nikhil is ordering 10 orders then it will show the 10 orders of nikhil
+app.get("/api/orders", async (req, res) => {
+  try {
+    const { salesmanName } = req.query; // Get salesman name from request
+
+    if (!salesmanName) {
+      return res.status(400).json({ success: false, message: "Salesman name is required" });
+    }
+
+    const orders = await Order.find({ salesmanName }); // Query MongoDB for orders matching salesman
+
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, message: "Error retrieving orders. Please try again." });
+  }
+});
+
 
 
 const PORT = process.env.PORT || 3001;
