@@ -9,7 +9,14 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 
 const Admin = require('./models/Admin');
+
+
+//Products routes
 const chocolateRoutes = require('./routes/chocolate');
+const biscuitRoutes = require('./routes/biscuit');
+
+
+
 
 const authMiddleware = require('./middleware/auth');
 const Order = require('./models/Order');  // Import Order model
@@ -30,6 +37,7 @@ mongoose.connect(process.env.MONGO_URI, {
 //   methods: ['GET', 'POST', 'PUT'],
 //   credentials: true
 // }));
+
 const allowedOrigins = [
   'https://flipzonto.com',
   'http://localhost:5173',
@@ -170,9 +178,11 @@ app.use('/salesman', salesmanRoutes);
 const salesmanAuthRoutes = require('./routes/salesmanAuth');
 app.use('/salesman-auth', salesmanAuthRoutes);
 
-
+// products routes
 app.use(chocolateRoutes); 
+app.use(biscuitRoutes);
 app.use('/chocolate', chocolateRoutes);
+app.use('/biscuit', biscuitRoutes);
 
 // Order Route
 app.post("/api/orders", async (req, res) => {
