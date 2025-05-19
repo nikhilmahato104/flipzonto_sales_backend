@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Other Items</title>
+  <style>
+    h1 {
+      text-align: center;
+      color: #000000;
+      margin-bottom: 1.5rem;
+    }
+
+    .choco-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .choco-card {
+      background-color: #f0f7ff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .choco-img {
+      border-radius: 6px;
+      margin-right: 1rem;
+    }
+
+    .choco-info {
+      flex: 1;
+      margin-left: 1rem;
+    }
+
+    .choco-name {
+      font-size: 1.1rem;
+      color: #1e3a8a;
+    }
+
+    .choco-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+      min-width: 100px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+      width: 100px;
+      height: 36px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s ease;
+    }
+
+    .edit-btn {
+      background-color: #1e3a8a;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #16307a;
+    }
+
+    .delete-btn {
+      background-color: #e53935;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #c62828;
+    }
+
+    @media (max-width: 600px) {
+      .choco-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .choco-actions {
+        flex-direction: row;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+    }
+
+    .add-btn-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+
+    .add-btn {
+      background-color: #1e3a8a;
+      color: white;
+      font-size: 1rem;
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background-color: #16307a;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="choco-heading">All Other Items</h1>
+
+  <div class="add-btn-wrapper">
+    <a href="/other/new" class="add-btn">➕ Add Item</a>
+  </div>
+
+  <div class="choco-list">
+    <% others.forEach(other => { %>
+      <div class="choco-card">
+        <img src="<%= other.image %>" width="60" class="choco-img" />
+        <div class="choco-info">
+          <strong class="choco-name"><%= other.name %></strong>
+          <p>MRP: ₹<%= other.MRP %></p>
+          <p>Weight: <%= other.total_weight %></p>
+          <p>Jars: <%= other.available_jar %></p>
+          <p>Rate: ₹<%= other.rate %></p>
+        </div>
+        <div class="choco-actions">
+          <a href="/other/edit/<%= other._id %>" class="edit-btn">Edit</a>
+          <form method="POST" action="/other/delete/<%= other._id %>">
+            <button type="submit" class="delete-btn">🗑️ Delete</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>

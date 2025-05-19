@@ -1,3 +1,4 @@
+
 // const mongoose = require('mongoose');
 
 // const orderSchema = new mongoose.Schema({
@@ -22,14 +23,15 @@
 //   salesmanName: String,
 //   salesmanContact: String,
 //   comment: String,
-//   orderDate: Date
+//   orderDate: Date,
+//   shipped: { 
+//     type: Boolean, 
+//     default: false 
+//   } // <-- Added shipped status
 // });
 
 // const Order = mongoose.model('Order', orderSchema);
 // module.exports = Order;
-
-
-
 
 const mongoose = require('mongoose');
 
@@ -55,11 +57,21 @@ const orderSchema = new mongoose.Schema({
   salesmanName: String,
   salesmanContact: String,
   comment: String,
-  orderDate: Date,
+  orderDate: {
+    type: Date,
+    default: () => new Date().toISOString() // Store in UTC
+  },
   shipped: { 
     type: Boolean, 
     default: false 
-  } // <-- Added shipped status
+  }
+});
+
+// Virtual to get the order date in 'Asia/Kolkata' timezone
+orderSchema.virtual('orderDateString').get(function() {
+  return this.orderDate
+    ? this.orderDate.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })
+    : '';
 });
 
 const Order = mongoose.model('Order', orderSchema);

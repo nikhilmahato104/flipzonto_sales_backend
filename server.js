@@ -14,8 +14,11 @@ const Admin = require('./models/Admin');
 //Products routes
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
-
-
+const drinkRoutes = require('./routes/drink');
+const oilRoutes = require('./routes/oil');
+const shampooRoutes = require('./routes/shampoo');
+const kirnaRoutes = require('./routes/kirana');
+const otherRoutes = require('./routes/other');
 
 
 const authMiddleware = require('./middleware/auth');
@@ -181,8 +184,18 @@ app.use('/salesman-auth', salesmanAuthRoutes);
 // products routes
 app.use(chocolateRoutes); 
 app.use(biscuitRoutes);
-app.use('/chocolate', chocolateRoutes);
+app.use(drinkRoutes);
+app.use(oilRoutes);
+app.use(shampooRoutes);
+app.use(kirnaRoutes);
+app.use(otherRoutes);
 app.use('/biscuit', biscuitRoutes);
+app.use('/chocolate', chocolateRoutes);
+app.use('/drink', drinkRoutes);
+app.use('/kirana',kirnaRoutes);
+app.use('/oil',oilRoutes);
+app.use('/shampoo',shampooRoutes);
+app.use('/other',otherRoutes);
 
 // Order Route
 app.post("/api/orders", async (req, res) => {
@@ -202,7 +215,6 @@ app.post("/api/orders", async (req, res) => {
     res.status(500).json({ success: false, message: 'Error placing the order. Please try again.' });
   }
 });
-
 
 app.get('/orderfetchfromDB', async (req, res) => {
   try {

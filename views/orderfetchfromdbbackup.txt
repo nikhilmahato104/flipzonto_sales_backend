@@ -255,8 +255,7 @@
   <% if (orders.length === 0) { %>
     <p class="no-orders">No orders found.</p>
   <% } else { %>
-    <% orders.slice().reverse().forEach(order => { %>
-
+    <% orders.forEach(order => { %>
       <div class="order <%= order.shipped ? 'shipped' : '' %>"
            id="order-<%= order._id %>"
            data-date="<%= order.orderDate ? order.orderDate.toISOString().split('T')[0] : '' %>"
