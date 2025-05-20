@@ -15,6 +15,7 @@ const Admin = require('./models/Admin');
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
 const drinkRoutes = require('./routes/drink');
+const detergentbarRoutes = require('./routes/detergentbar');
 const oilRoutes = require('./routes/oil');
 const shampooRoutes = require('./routes/shampoo');
 const kirnaRoutes = require('./routes/kirana');
@@ -66,7 +67,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT'],
   credentials: true
 }));
-
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -185,6 +185,7 @@ app.use('/salesman-auth', salesmanAuthRoutes);
 app.use(chocolateRoutes); 
 app.use(biscuitRoutes);
 app.use(drinkRoutes);
+app.use(detergentbarRoutes);
 app.use(oilRoutes);
 app.use(shampooRoutes);
 app.use(kirnaRoutes);
@@ -192,6 +193,7 @@ app.use(otherRoutes);
 app.use('/biscuit', biscuitRoutes);
 app.use('/chocolate', chocolateRoutes);
 app.use('/drink', drinkRoutes);
+app.use('/detergentbar', detergentbarRoutes);
 app.use('/kirana',kirnaRoutes);
 app.use('/oil',oilRoutes);
 app.use('/shampoo',shampooRoutes);
