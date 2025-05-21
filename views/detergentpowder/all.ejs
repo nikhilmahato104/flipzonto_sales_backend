@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>All Drinks</title>
+  <title>All Detergent Powders</title>
   <style>
     h1 {
       text-align: center;
@@ -11,7 +11,7 @@
       margin-bottom: 1.5rem;
     }
 
-    .choco-list {
+    .powder-list {
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -20,7 +20,7 @@
       margin: auto;
     }
 
-    .choco-card {
+    .powder-card {
       background-color: #f0f7ff;
       border: 1px solid #ddd;
       border-radius: 10px;
@@ -31,22 +31,22 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     }
 
-    .choco-img {
+    .powder-img {
       border-radius: 6px;
       margin-right: 1rem;
     }
 
-    .choco-info {
+    .powder-info {
       flex: 1;
       margin-left: 1rem;
     }
 
-    .choco-name {
+    .powder-name {
       font-size: 1.1rem;
       color: #1e3a8a;
     }
 
-    .choco-actions {
+    .powder-actions {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
@@ -90,12 +90,12 @@
     }
 
     @media (max-width: 600px) {
-      .choco-card {
+      .powder-card {
         flex-direction: column;
         align-items: flex-start;
       }
 
-      .choco-actions {
+      .powder-actions {
         flex-direction: row;
         gap: 1rem;
         margin-top: 0.5rem;
@@ -126,26 +126,26 @@
   </style>
 </head>
 <body>
-  <h1 class="choco-heading">All Drinks</h1>
+  <h1 class="powder-heading">All Detergent Powders</h1>
 
   <div class="add-btn-wrapper">
-    <a href="/drink/new" class="add-btn">➕ Add Drink</a>
+    <a href="/detergentpowder/new" class="add-btn">➕ Add Detergent</a>
   </div>
 
-  <div class="choco-list">
-    <% drinks.forEach(drink => { %>
-      <div class="choco-card">
-        <img src="<%= drink.image %>" width="60" class="choco-img" />
-        <div class="choco-info">
-          <strong class="choco-name"><%= drink.name %></strong>
-          <p>MRP: ₹<%= drink.MRP %></p>
-          <p>Volume: <%= drink.total_volume %></p>
-          <p>Bottles: <%= drink.available_jar %></p>
-          <p>Rate: ₹<%= drink.rate %></p>
+  <div class="powder-list">
+    <% powders.forEach(powder => { %>
+      <div class="powder-card">
+        <img src="<%= powder.image %>" width="60" class="powder-img" />
+        <div class="powder-info">
+          <strong class="powder-name"><%= powder.name %></strong>
+          <p>MRP: ₹<%= powder.MRP %></p>
+          <p>Weight: <%= powder.total_weight %></p>
+          <p>Jars: <%= powder.available_jar %></p>
+          <p>Rate: ₹<%= powder.rate %></p>
         </div>
-        <div class="choco-actions">
-          <a href="/drink/edit/<%= drink._id %>" class="edit-btn">Edit</a>
-          <form method="POST" action="/drink/delete/<%= drink._id %>">
+        <div class="powder-actions">
+          <a href="/detergentpowder/edit/<%= powder._id %>" class="edit-btn">Edit</a>
+          <form method="POST" action="/detergentpowder/delete/<%= powder._id %>">
             <button type="submit" class="delete-btn">🗑️ Delete</button>
           </form>
         </div>

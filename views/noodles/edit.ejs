@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Drink</title>
+  <title>Edit Noodle</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -54,14 +54,14 @@
   </style>
 </head>
 <body>
-  <h1>Edit Drink</h1>
-  <form method="POST" action="/drink/edit/<%= drink._id %>">
-    <input type="text" name="image" value="<%= drink.image %>" placeholder="Image URL" required />
-    <input type="text" name="name" value="<%= drink.name %>" placeholder="Name" required />
-    <input type="number" name="MRP" value="<%= drink.MRP.toFixed(2) %>" placeholder="MRP" step="0.01" required />
-    <input type="text" name="total_volume" value="<%= drink.total_volume %>" placeholder="Total Volume" required />
-    <input type="number" name="available_bottles" value="<%= drink.available_bottles %>" placeholder="Available Bottles" required />
-    <input type="number" name="rate" value="<%= drink.rate.toFixed(2) %>" placeholder="Rate" step="0.01" required />
+  <h1>Edit Noodle</h1>
+  <form method="POST" action="/noodles/edit/<%= noodle._id %>">
+    <input type="text" name="image" value="<%= noodle.image %>" placeholder="Image URL" required />
+    <input type="text" name="name" value="<%= noodle.name %>" placeholder="Name" required />
+    <input type="number" name="MRP" value="<%= noodle.MRP.toFixed(2) %>" placeholder="MRP" step="0.01" required />
+    <input type="text" name="total_weight" value="<%= noodle.total_weight %>" placeholder="Total Weight" required />
+    <input type="number" name="available_jar" value="<%= noodle.available_jar %>" placeholder="Available Jars" required />
+    <input type="number" name="rate" value="<%= noodle.rate.toFixed(2) %>" placeholder="Rate" step="0.01" required />
     <button type="submit">Update</button>
   </form>
 </body>

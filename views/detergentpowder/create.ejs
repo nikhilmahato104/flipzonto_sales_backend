@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add Drink</title>
+  <title>Add Detergent Powder</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -74,14 +74,14 @@
   </style>
 </head>
 <body>
-  <h1>Add New Drink</h1>
-  <form method="POST" action="/drink/new">
+  <h1>Add New Detergent Powder</h1>
+  <form method="POST" action="/detergentpowder/new">
     <input type="text" name="image" placeholder="Image URL" required />
     <input type="text" name="name" placeholder="Name" required />
     <input type="number" name="MRP" placeholder="MRP" required />
     <input type="number" name="rate" placeholder="Rate" required />
-    <input type="text" name="total_volume" placeholder="Total Volume (e.g. 500ml)" required />
-    <input type="number" name="available_jar" placeholder="Available Bottles" required />
+    <input type="text" name="total_weight" placeholder="Total Weight" required />
+    <input type="number" name="available_jar" placeholder="Available Jars" required />
     <button type="submit">Add</button>
   </form>
 </body>
