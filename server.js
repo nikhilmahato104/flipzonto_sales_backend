@@ -14,6 +14,7 @@ const Admin = require('./models/Admin');
 //Products routes
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
+const colddrinkRoutes = require('./routes/colddrink');
 const drinkRoutes = require('./routes/drink');
 const detergentbarRoutes = require('./routes/detergentbar');
 const oilRoutes = require('./routes/oil');
@@ -183,8 +184,10 @@ app.use('/salesman-auth', salesmanAuthRoutes);
 
 // products routes
 app.use(chocolateRoutes); 
+app.use(colddrinkRoutes);
 app.use(biscuitRoutes);
 app.use(drinkRoutes);
+
 app.use(detergentbarRoutes);
 app.use(oilRoutes);
 app.use(shampooRoutes);
@@ -192,6 +195,7 @@ app.use(kirnaRoutes);
 app.use(otherRoutes);
 app.use('/biscuit', biscuitRoutes);
 app.use('/chocolate', chocolateRoutes);
+app.use('/colddrink', colddrinkRoutes);
 app.use('/drink', drinkRoutes);
 app.use('/detergentbar', detergentbarRoutes);
 app.use('/kirana',kirnaRoutes);
