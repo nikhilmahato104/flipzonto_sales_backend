@@ -12,6 +12,7 @@ const Admin = require('./models/Admin');
 
 
 //Products routes
+const babycareRoutes = require('./routes/babycare');
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
 const bathingsoapRoutes = require('./routes/bathingsoap');
@@ -27,6 +28,7 @@ const noodlesRoutes = require('./routes/noodles');
 const snackRoutes = require('./routes/snack');
 const teaRoutes = require('./routes/tea');
 const toothpasteRoutes = require('./routes/toothpaste');
+const personalcareRoutes = require('./routes/personalcare');
 const otherRoutes = require('./routes/other');
 
 
@@ -190,6 +192,7 @@ const salesmanAuthRoutes = require('./routes/salesmanAuth');
 app.use('/salesman-auth', salesmanAuthRoutes);
 
 // products routes
+app.use(babycareRoutes);
 app.use(chocolateRoutes); 
 app.use(colddrinkRoutes);
 app.use(biscuitRoutes);
@@ -205,7 +208,9 @@ app.use(teaRoutes);
 app.use(toothpasteRoutes);
 app.use(napkinRoutes);
 app.use(noodlesRoutes);
+app.use(personalcareRoutes);
 app.use(otherRoutes);
+app.use('/babycare', babycareRoutes);
 app.use('/biscuit', biscuitRoutes);
 app.use('/bathingsoap', bathingsoapRoutes);
 app.use('/chocolate', chocolateRoutes);
@@ -221,6 +226,8 @@ app.use('/tea', teaRoutes);
 app.use('/toothpaste', toothpasteRoutes);
 app.use('/oil',oilRoutes);
 app.use('/shampoo',shampooRoutes);
+// app.use('/personlacare',personlacareRoutes);
+app.use('/personalcare', personalcareRoutes);
 app.use('/other',otherRoutes);
 
 // Order Route

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Edit Biscuit</title>
+  <title>Edit Babycare Product</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -54,14 +54,14 @@
   </style>
 </head>
 <body>
-  <h1>Edit Biscuit</h1>
-  <form method="POST" action="/biscuit/edit/<%= biscuit._id %>">
-    <input type="text" name="image" value="<%= biscuit.image %>" placeholder="Image URL" required />
-    <input type="text" name="name" value="<%= biscuit.name %>" placeholder="Name" required />
-    <input type="number" name="MRP" value="<%= biscuit.MRP.toFixed(2) %>" placeholder="MRP" step="0.01" required />
-    <input type="text" name="total_weight" value="<%= biscuit.total_weight %>" placeholder="Total Weight" required />
-    <input type="number" name="available_jar" value="<%= biscuit.available_jar %>" placeholder="Available Jars" required />
-    <input type="number" name="rate" value="<%= biscuit.rate.toFixed(2) %>" placeholder="Rate" step="0.01" required />
+  <h1>Edit Babycare Product</h1>
+  <form method="POST" action="/babycare/edit/<%= item._id %>">
+    <input type="text" name="image" value="<%= item.image %>" placeholder="Image URL" required />
+    <input type="text" name="name" value="<%= item.name %>" placeholder="Product Name" required />
+    <input type="number" name="MRP" value="<%= item.MRP.toFixed(2) %>" placeholder="MRP" step="0.01" required />
+    <input type="text" name="total_weight" value="<%= item.total_weight %>" placeholder="Total Weight/Volume" required />
+    <input type="number" name="available_jar" value="<%= item.available_jar %>" placeholder="Available Units" required />
+    <input type="number" name="rate" value="<%= item.rate.toFixed(2) %>" placeholder="Rate" step="0.01" required />
     <button type="submit">Update</button>
   </form>
 </body>
