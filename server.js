@@ -22,6 +22,7 @@ const oilRoutes = require('./routes/oil');
 const shampooRoutes = require('./routes/shampoo');
 const kirnaRoutes = require('./routes/kirana');
 const noodlesRoutes = require('./routes/noodles');
+const snackRoutes = require('./routes/snack');
 const otherRoutes = require('./routes/other');
 
 
@@ -194,6 +195,7 @@ app.use(detergentbarRoutes);
 app.use(oilRoutes);
 app.use(shampooRoutes);
 app.use(kirnaRoutes);
+app.use(snackRoutes);
 app.use(noodlesRoutes);
 app.use(otherRoutes);
 app.use('/biscuit', biscuitRoutes);
@@ -204,6 +206,7 @@ app.use('/detergentbar', detergentbarRoutes);
 app.use('/detergentpowder', detergentpowderRoutes);
 app.use('/kirana',kirnaRoutes);
 app.use('/noodles', noodlesRoutes);
+app.use('/snack', snackRoutes);
 app.use('/oil',oilRoutes);
 app.use('/shampoo',shampooRoutes);
 app.use('/other',otherRoutes);
