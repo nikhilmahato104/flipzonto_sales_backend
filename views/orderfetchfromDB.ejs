@@ -112,8 +112,36 @@
 
   <!-- jsPDF Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="fonts/noto-sans-devanagari-normal.js"></script>
+
 
   <script>
+
+function numberToWords(num) {
+  const a = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+    'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+  function convert(n) {
+    if (n < 20) return a[n];
+    if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? ' ' + a[n % 10] : '');
+    if (n < 1000) return a[Math.floor(n / 100)] + ' hundred' + (n % 100 ? ' ' + convert(n % 100) : '');
+    if (n < 100000) return convert(Math.floor(n / 1000)) + ' thousand' + (n % 1000 ? ' ' + convert(n % 1000) : '');
+    if (n < 10000000) return convert(Math.floor(n / 100000)) + ' lakh' + (n % 100000 ? ' ' + convert(n % 100000) : '');
+    return convert(Math.floor(n / 10000000)) + ' crore' + (n % 10000000 ? ' ' + convert(n % 10000000) : '');
+  }
+
+  const rupees = Math.floor(num);
+  const paisa = Math.round((num - rupees) * 100);
+  let words = convert(rupees) + ' rupees';
+  if (paisa > 0) words += ' and ' + convert(paisa) + ' paisa';
+  return words + ' only';
+}
+
+
+
     function refreshPage() {
       location.reload();
     }
@@ -146,87 +174,246 @@
       });
     }
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     async function downloadInvoice(orderId) {
-    const { jsPDF } = window.jspdf;
-    const orderEl = document.getElementById(`order-${orderId}`);
-    if (!orderEl) return;
+      const { jsPDF } = window.jspdf;
 
-    const doc = new jsPDF();
-    let y = 10;
+      if (typeof QRCode === 'undefined') {
+        alert('QRCode library not loaded.');
+        return;
+      }
 
-    // Header
-    doc.setFontSize(18);
-    doc.text('Thank you for shopping with FlipZonto', 10, y);
-    y += 10;
+      const orderEl = document.getElementById(`order-${orderId}`);
+      if (!orderEl) {
+        console.error(`Order element with ID 'order-${orderId}' not found.`);
+        return;
+      }
 
-    doc.setFontSize(12);
-    doc.text('Verified by Chandan Sharma and Akash Yadav.', 10, y);
-    y += 20;
+      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+      const margin = 40;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      let y = margin;
 
-    // Helper to add labeled text
-    function addText(label, value) {
-      doc.text(`${label}: ${value}`, 10, y);
-      y += 10;
-    }
+      doc.setDrawColor(0);
+      doc.setLineWidth(1.5);
+      doc.rect(margin - 10, margin - 10, pageWidth - margin * 2 + 20, pageHeight - margin * 2 + 20);
 
-    const shopName = orderEl.querySelector('h2')?.textContent || '';
-    const owner = orderEl.querySelector('.shop-info p:nth-of-type(1)')?.textContent || '';
-    const contact = orderEl.querySelector('.shop-info p:nth-of-type(2)')?.textContent || '';
-    const address = orderEl.querySelector('.shop-info p:nth-of-type(3)')?.textContent || '';
-    const salesman = orderEl.querySelector('.shop-info p:nth-of-type(4)')?.textContent || '';
-    const comment = orderEl.querySelector('.shop-info p:nth-of-type(5)')?.textContent || '';
-    const date = orderEl.querySelector('.shop-info p:nth-of-type(6)')?.textContent || '';
-    const status = orderEl.querySelector('.shop-info p:nth-of-type(7)')?.textContent || '';
+      try {
+        doc.setFont('NotoSansDevanagari', 'normal');
+      } catch (e) {
+        doc.setFont('Helvetica', 'normal');
+      }
 
-    addText('Shop', shopName);
-    addText('Owner', owner);
-    addText('Contact', contact);
-    addText('Address', address);
-    addText('Salesman', salesman);
-    addText('Comment', comment);
-    addText('Date', date);
-    addText('Status', status);
+      const qrSize = 70;
 
-    y += 10;
-    doc.text('Cart Items:', 10, y);
-    y += 10;
+      const rows = Array.from(orderEl.querySelectorAll('tbody tr'));
+      let totalQty = 0, totalPrice = 0;
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rate = parseFloat(cells[2]?.textContent.replace(/[₹,]/g, '') || '0');
+        const qty = parseFloat(cells[3]?.textContent || '0');
+        totalQty += qty;
+        totalPrice += rate * qty;
+      });
 
-    // Calculate subtotal
-    const rows = Array.from(orderEl.querySelectorAll('tbody tr'));
-    let subtotal = 0;
+      const qrContent = `Order ID: ${orderId}\nTotal Items: ${totalQty}\nTotal Price: ₹${totalPrice.toFixed(2)}`;
+      const qrDataUrl = await QRCode.toDataURL(qrContent, { margin: 1, width: qrSize });
+      doc.addImage(qrDataUrl, 'PNG', margin, y, qrSize, qrSize);
 
-    rows.forEach(row => {
+      const shopName = orderEl.querySelector('h2')?.textContent.replace('Shop: ', '').trim() || 'Invoice';
+      doc.setFontSize(18);
+      doc.text('HomeDelivery Invoice', margin + qrSize + 20, y + 20);
+      doc.setFontSize(12);
+      doc.text(`Invoice Number: ${orderId}`, margin + qrSize + 20, y + 40);
+      doc.setFontSize(10);
+      doc.text('Thank you for shopping with Homedelivery', margin + qrSize + 20, y + 55);
+      // doc.text('Verified by Chandan Sharma and Akash Yadav.', margin + qrSize + 20, y + 70);
+      y += qrSize + 40;
+
+      function drawLabelValue(label, value, startY, options = {}) {
+        const currentFontSize = options.fontSize || 11;
+        const lineHeight = options.lineHeight || 15;
+        doc.setFontSize(currentFontSize);
+        doc.text(`${label}:`, margin, startY);
+
+        const valueX = margin + 150;
+        const availableWidthForValue = pageWidth - valueX - margin;
+        const splitValue = doc.splitTextToSize(value, availableWidthForValue);
+        doc.text(splitValue, valueX, startY, { lineHeightFactor: lineHeight / currentFontSize });
+
+        return splitValue.length * lineHeight;
+      }
+
+      const owner = orderEl.querySelector('.shop-info p:nth-of-type(1)')?.textContent.replace('Owner: ', '') || '';
+      const contact = orderEl.querySelector('.shop-info p:nth-of-type(2)')?.textContent.replace('Contact: ', '') || '';
+      const rawAddress = orderEl.querySelector('.shop-info p:nth-of-type(3)')?.textContent.replace('Address: ', '') || '';
+      const salesman = orderEl.querySelector('.shop-info p:nth-of-type(4)')?.textContent || '';
+      const comment = orderEl.querySelector('.shop-info p:nth-of-type(5)')?.textContent.replace('Comment: ', '') || '';
+      const date = orderEl.querySelector('.shop-info p:nth-of-type(6)')?.textContent.replace('Order Date: ', '') || '';
+      const status = orderEl.querySelector('.shop-info p:nth-of-type(7)')?.textContent.replace('Status: ', '') || '';
+
+      y += drawLabelValue('Buyer (Shop) Name', shopName, y);
+      y += drawLabelValue('Owner', owner, y);
+      y += drawLabelValue('Contact', contact, y);
+
+      const splitAddress = (() => {
+        const words = rawAddress.trim().split(/\s+/);
+        const line1 = words.slice(0, 3).join(' ');
+        const line2 = words.slice(3, 6).join(' ');
+        const line3 = words.slice(6).join(' ');
+        return [line1, line2, line3].filter(Boolean);
+      })();
+
+      doc.text('Address:', margin, y);
+      splitAddress.forEach((line, index) => {
+        doc.text(line, margin + 150, y + index * 15);
+      });
+      y += splitAddress.length * 15;
+
+      y += drawLabelValue('Salesman', salesman, y);
+      y += drawLabelValue('Comment', comment, y);
+      y += drawLabelValue('Order Date', date, y);
+      y += drawLabelValue('Status', status, y);
+
+      y += 20;
+
+      const tableX = margin;
+      let tableY = y;
+      const colWidths = [180, 100, 70, 70, 80];
+      const headers = ['Item Name', 'Category', 'Rate (₹)', 'Quantity', 'Total (₹)'];
+      const cellPadding = 5;
+
+      doc.setFillColor(230);
+      doc.rect(tableX, tableY, colWidths.reduce((a, b) => a + b, 0), 25, 'F');
+      doc.setFontSize(12);
+      let currentX = tableX;
+      headers.forEach((header, i) => {
+        doc.text(header, currentX + colWidths[i] / 2, tableY + 17, { align: 'center' });
+        currentX += colWidths[i];
+      });
+
+      y = tableY + 25;
+      doc.setFontSize(11);
+      const rowHeight = 25;
+      let subtotal = 0;
+
+      rows.forEach(row => {
         const cells = row.querySelectorAll('td');
         const name = cells[0]?.textContent || '';
         const category = cells[1]?.textContent || '';
-        const rateText = cells[2]?.textContent?.replace(/[₹,]/g, '') || '0';
-        const qtyText = cells[3]?.textContent || '0';
+        const rate = parseFloat(cells[2]?.textContent.replace(/[₹,]/g, '') || '0');
+        const qty = parseFloat(cells[3]?.textContent || '0');
+        const total = rate * qty;
+        subtotal += total;
 
-        const rate = parseFloat(rateText);
-        const qty = parseInt(qtyText, 10);
-        const lineTotal = rate * qty;
+        currentX = tableX;
+        [name, category, rate.toFixed(2), qty.toString(), total.toFixed(2)].forEach((text, i) => {
+          const textToDraw = String(text);
+          const cellWidth = colWidths[i];
+          const cellCenter = currentX + cellWidth / 2;
+          const splitLines = doc.splitTextToSize(textToDraw, cellWidth - cellPadding * 2);
+          if (splitLines.length > 1) {
+            doc.text(splitLines, currentX + cellPadding, y + 15);
+          } else {
+            doc.text(textToDraw, cellCenter, y + 15, { align: 'center' });
+          }
+          currentX += cellWidth;
+        });
 
-        subtotal += lineTotal;
+        y += rowHeight;
+      });
 
-        doc.text(`• ${name} | ${category} | ₹${rate} × ${qty} = ₹${lineTotal.toFixed(2)}`, 10, y);
-        y += 8;
+      y += 10;
+//       doc.setFontSize(13);
+// const subtotalText = `Subtotal: ₹${subtotal.toFixed(2)}`;
+// doc.text(subtotalText, pageWidth / 2, y, { align: 'center' });
 
-        if (y > 280) {
-            doc.addPage();
-            y = 10;
-        }
-    });
+// y += 20;
+// const words = numberToWords(subtotal).replace(/\b\w/g, l => l.toUpperCase()); // Capitalize first letter of each word
+// doc.setFontSize(11);
+// doc.text(words, pageWidth / 2, y, { align: 'center' });
+doc.setFont('Helvetica', 'bold'); // Use a standard font to avoid font rendering issues
+doc.setFontSize(13);
 
-    // Show subtotal at end
-    y += 10;
-    doc.setFontSize(14);
-    doc.text(`Subtotal: ₹${subtotal.toFixed(2)}`, 10, y);
+const subtotalClean = Number(subtotal || 0).toFixed(2);
+const subtotalText = `Subtotal: ₹${subtotalClean}`;
 
-    // Save PDF
-    const fileName = `${shopName.replace(/\s+/g, '_')}_Invoice.pdf`;
-    doc.save(fileName);
-}
+// ✅ This will center the text with no unwanted "1"
+doc.text(subtotalText, pageWidth / 2, y, { align: 'center' });
+
+y += 20;
+
+const words = numberToWords(subtotal).replace(/\b\w/g, l => l.toUpperCase());
+doc.setFontSize(11);
+doc.text(words, pageWidth / 2, y, { align: 'center' });
+
+y += 20;
+
+doc.setFont('Helvetica', 'normal');
+doc.setFontSize(10);
+// doc.text('This is a system generated invoice. No signature required.', margin, y);
+
+
+
+y += 20;
+doc.setFontSize(10);
+// doc.text('This is a system generated invoice. No signature required.', margin, y);
+
+
+      const fileName = `${shopName.replace(/\s+/g, '_')}_${orderId}.pdf`;
+      doc.save(fileName);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   </script>
