@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All Product Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #1e3a8a;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f1f5f9;
+    }
+    .total-row {
+      font-weight: bold;
+      background: #e0f2fe;
+    }
+    .back-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #1e3a8a;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>📦 All Product Details</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Product Name</th>
+        <th>Rate (₹)</th>
+        <th>Quantity</th>
+        <th>Total (₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% allProducts.forEach(product => { %>
+        <tr>
+          <td><%= product.category %></td>
+          <td><%= product.name %></td>
+          <td>₹ <%= product.rate %></td>
+          <td><%= product.quantity %></td>
+          <td>₹ <%= product.total %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="4">Grand Total</td>
+        <td>₹ <%= grandTotal %></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <a href="/" class="back-btn">⬅ Back to Dashboard</a>
+</body>
+</html>

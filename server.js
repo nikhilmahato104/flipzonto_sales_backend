@@ -230,6 +230,14 @@ app.use('/shampoo',shampooRoutes);
 app.use('/personalcare', personalcareRoutes);
 app.use('/other',otherRoutes);
 
+
+
+
+const showAllProductDetails = require('./routes/showallproductdetails');
+app.use('/',authMiddleware, showAllProductDetails);
+
+
+
 // Order Route
 app.post("/api/orders", async (req, res) => {
   try {
