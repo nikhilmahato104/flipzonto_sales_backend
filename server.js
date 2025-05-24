@@ -12,10 +12,10 @@ const Admin = require('./models/Admin');
 
 
 //Products routes
-const babycareRoutes = require('./routes/babycare');
+const babycareRoutes = require('./routes/babycare');  //bugs 1 X     working this
+const bathingsoapRoutes = require('./routes/bathingsoap');  // bugs 2 working this
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
-const bathingsoapRoutes = require('./routes/bathingsoap');
 const colddrinkRoutes = require('./routes/colddrink');
 const drinkRoutes = require('./routes/drink');
 const detergentbarRoutes = require('./routes/detergentbar');
@@ -23,12 +23,12 @@ const detergentpowderRoutes = require('./routes/detergentpowder');
 const oilRoutes = require('./routes/oil');
 const shampooRoutes = require('./routes/shampoo');
 const kirnaRoutes = require('./routes/kirana');
-const napkinRoutes = require('./routes/napkin');
 const noodlesRoutes = require('./routes/noodles');
+const napkinRoutes = require('./routes/napkin');     //bugs 3 X working this
+const personalcareRoutes = require('./routes/personalcare'); // bugs 4 X working this
 const snackRoutes = require('./routes/snack');
-const teaRoutes = require('./routes/tea');
-const toothpasteRoutes = require('./routes/toothpaste');
-const personalcareRoutes = require('./routes/personalcare');
+const teaRoutes = require('./routes/tea');  //bugs 5 X working this
+const toothpasteRoutes = require('./routes/toothpaste'); //bugs 6 X working this.
 const otherRoutes = require('./routes/other');
 
 
@@ -192,11 +192,11 @@ const salesmanAuthRoutes = require('./routes/salesmanAuth');
 app.use('/salesman-auth', salesmanAuthRoutes);
 
 // products routes
-app.use(babycareRoutes);
+app.use(babycareRoutes); // Baby Care
+app.use(bathingsoapRoutes); // Bathing Soap
 app.use(chocolateRoutes); 
 app.use(colddrinkRoutes);
 app.use(biscuitRoutes);
-app.use(bathingsoapRoutes);
 app.use(drinkRoutes);
 app.use(detergentpowderRoutes);
 app.use(detergentbarRoutes);
@@ -204,39 +204,31 @@ app.use(oilRoutes);
 app.use(shampooRoutes);
 app.use(kirnaRoutes);
 app.use(snackRoutes);
-app.use(teaRoutes);
-app.use(toothpasteRoutes);
-app.use(napkinRoutes);
 app.use(noodlesRoutes);
-app.use(personalcareRoutes);
+app.use(napkinRoutes); //napkin
+app.use(personalcareRoutes); //personalcare
+app.use(teaRoutes); //tea
+app.use(toothpasteRoutes); //toothpaste
 app.use(otherRoutes);
-app.use('/babycare', babycareRoutes);
+
+app.use('/babycare', babycareRoutes); //babycare
+app.use('/bathingsoap', bathingsoapRoutes); //bathingsoap
 app.use('/biscuit', biscuitRoutes);
-app.use('/bathingsoap', bathingsoapRoutes);
 app.use('/chocolate', chocolateRoutes);
 app.use('/colddrink', colddrinkRoutes);
 app.use('/drink', drinkRoutes);
 app.use('/detergentbar', detergentbarRoutes);
 app.use('/detergentpowder', detergentpowderRoutes);
 app.use('/kirana',kirnaRoutes);
-app.use('/napkin', napkinRoutes);
 app.use('/noodles', noodlesRoutes);
+app.use('/napkin', napkinRoutes); //napkin
 app.use('/snack', snackRoutes);
-app.use('/tea', teaRoutes);
-app.use('/toothpaste', toothpasteRoutes);
 app.use('/oil',oilRoutes);
 app.use('/shampoo',shampooRoutes);
-// app.use('/personlacare',personlacareRoutes);
-app.use('/personalcare', personalcareRoutes);
+app.use('/personalcare', personalcareRoutes); //personalcare
+app.use('/tea', teaRoutes); //tea
+app.use('/toothpaste', toothpasteRoutes); //toothpaste
 app.use('/other',otherRoutes);
-
-
-
-
-const showAllProductDetails = require('./routes/showallproductdetails');
-app.use('/',authMiddleware, showAllProductDetails);
-
-
 
 // Order Route
 app.post("/api/orders", async (req, res) => {
@@ -302,6 +294,12 @@ app.get("/api/orders", async (req, res) => {
 });
 
 
+const showAllProductDetails = require('./routes/showallproductdetails');
+app.use('/',authMiddleware, showAllProductDetails);
+//ye line ko yahi rakhna hain shoallproducts ka 
+//ishi k karan error aaya thaa.
+//beta-version-6   main ye line k karan hi error aaya tha.
+//beta-version-6.5 is good
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
