@@ -4,7 +4,7 @@ const router = express.Router();
 
 const models = {
   Babycare: require('../models/Babycare'),
-  BathingSoap: require('../models/BathingSoap'),
+  // BathingSoap: require('../models/BathingSoap'),
   Biscuit: require('../models/Biscuit'),
   Chocolate: require('../models/Chocolate'),
 

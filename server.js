@@ -13,7 +13,7 @@ const Admin = require('./models/Admin');
 
 //Products routes
 const babycareRoutes = require('./routes/babycare');  //bugs 1 X     working this
-const bathingsoapRoutes = require('./routes/bathingsoap');  // bugs 2 working this
+//const bathingsoapRoutes = require('./routes/bathingsoap');  // bugs 2 working this
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
 const colddrinkRoutes = require('./routes/colddrink');
@@ -193,7 +193,7 @@ app.use('/salesman-auth', salesmanAuthRoutes);
 
 // products routes
 app.use(babycareRoutes); // Baby Care
-app.use(bathingsoapRoutes); // Bathing Soap
+// app.use(bathingsoapRoutes); // Bathing Soap
 app.use(chocolateRoutes); 
 app.use(colddrinkRoutes);
 app.use(biscuitRoutes);
@@ -212,7 +212,7 @@ app.use(toothpasteRoutes); //toothpaste
 app.use(otherRoutes);
 
 app.use('/babycare', babycareRoutes); //babycare
-app.use('/bathingsoap', bathingsoapRoutes); //bathingsoap
+//app.use('/bathingsoap', bathingsoapRoutes); //bathingsoap
 app.use('/biscuit', biscuitRoutes);
 app.use('/chocolate', chocolateRoutes);
 app.use('/colddrink', colddrinkRoutes);
