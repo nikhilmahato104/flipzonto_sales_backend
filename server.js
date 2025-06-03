@@ -32,6 +32,8 @@ const toothpasteRoutes = require('./routes/toothpaste'); //bugs 6 X working this
 const otherRoutes = require('./routes/other');
 
 
+
+
 const authMiddleware = require('./middleware/auth');
 const Order = require('./models/Order');  // Import Order model
 
@@ -300,6 +302,12 @@ app.use('/',authMiddleware, showAllProductDetails);
 //ishi k karan error aaya thaa.
 //beta-version-6   main ye line k karan hi error aaya tha.
 //beta-version-6.5 is good
+// server.js (or app.js)
+
+//CHECK THE ORDER DETAILS BY THE HELP OF OORDER ID
+const checkOrderById = require('./routes/checkOrderById');
+app.use('/check-order', checkOrderById);
+
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

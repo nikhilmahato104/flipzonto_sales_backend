@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Check Your Order</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+      text-align: center;
+    }
+    .form-box {
+      background: white;
+      padding: 30px;
+      margin: auto;
+      width: 400px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-box">
+    <h2>Check Your Order</h2>
+    <form action="/check-order/redirect" method="GET">
+      <label for="orderId">Enter Order ID / Invoice Number:</label><br>
+      <input type="text" id="orderId" name="orderId" required>
+      <br>
+      <button type="submit">View Order</button>
+    </form>
+  </div>
+
+</body>
+</html>
