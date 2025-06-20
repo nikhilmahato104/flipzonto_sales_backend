@@ -463,11 +463,11 @@ async function downloadInvoice(orderId) {
 
   const shopName = orderEl.querySelector('h2')?.textContent.replace('Shop: ', '').trim() || 'Invoice';
   doc.setFontSize(18);
-  doc.text('HomeDelivery Invoice', margin + qrSize + 20, y + 20);
+  doc.text('FlipZonto Invoice', margin + qrSize + 20, y + 20);
   doc.setFontSize(12);
   doc.text(`Invoice Number: ${orderId}`, margin + qrSize + 20, y + 40);
   doc.setFontSize(10);
-  doc.text('Thank you for shopping with Homedelivery', margin + qrSize + 20, y + 55);
+  doc.text('Thank you for shopping with FlipZonto', margin + qrSize + 20, y + 55);
   y += qrSize + 40;
 
   function drawLabelValue(label, value, startY, options = {}) {
@@ -513,7 +513,7 @@ async function downloadInvoice(orderId) {
   y += drawLabelValue('Salesman', salesman, y);
   y += drawLabelValue('Comment', comment, y);
   y += drawLabelValue('Order Date', date, y);
-  y += drawLabelValue('Status', status, y);
+  // y += drawLabelValue('Status', status, y);
 
   y += 20;
 

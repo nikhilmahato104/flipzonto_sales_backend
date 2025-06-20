@@ -101,9 +101,20 @@ app.use(session({
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+//this code is working both laptop and render
+// const transporter = nodemailer.createTransport({
+//   service: 'gmail',
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS
+//   }
+// });
 
+//this code working my new laptop for localhost
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587, // Use 465 only if using secure: true
+  secure: false, // upgrade later with STARTTLS
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
