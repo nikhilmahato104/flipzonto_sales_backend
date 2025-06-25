@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Shampoo = require('../models/Shampoo'); // ✅ Import the Shampoo model
 const authMiddleware = require('../middleware/auth');
+const salesmanAuth = require('../middleware/salesmanAuth');
 
 // 🔓 PUBLIC ROUTE: Fetch all shampoos for frontend
-router.get('/api',authMiddleware, async (req, res) => {
+router.get('/api',  salesmanAuth, async (req, res) => {
   try {
     const shampoos = await Shampoo.find();
     res.json(shampoos);
