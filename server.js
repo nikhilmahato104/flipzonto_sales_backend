@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 
 const Admin = require('./models/Admin');
-
+const twilio = require('twilio');
 
 //Products routes
 const babycareRoutes = require('./routes/babycare');  //bugs 1 X     working this
@@ -127,11 +127,16 @@ app.get('/login', (req, res) => {
 });
 
 
+
+
+// Twilio setup
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
 
-  if (!admin) return res.send(' Invalid email or password');
+  if (!admin) return res.send('Invalid email or password');
   const isMatch = await bcrypt.compare(password, admin.password);
   if (!isMatch) return res.send('Invalid email or password');
 
@@ -154,20 +159,38 @@ app.post('/login', async (req, res) => {
   `;
 
   try {
+    // Send OTP via Email
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: ['26krakashyadav@gmail.com', 'nikhilmahato104@gmail.com','chandankumarsharma8124@gmail.com'],
+      to: [
+        '26krakashyadav@gmail.com',
+        'nikhilmahato104@gmail.com',
+        'chandankumarsharma8124@gmail.com'
+      ],
       subject,
       html: htmlMessage
     });
-//new
-    console.log(' OTP sent');
+
+    // Send OTP via Twilio SMS to predefined Indian numbers
+    const mobileRecipients = ['+919304260733', '+919661461412']; // <-- Replace with actual numbers
+
+    for (const mobile of mobileRecipients) {
+      await twilioClient.messages.create({
+        body: `🔐 Flipzonto OTP: ${otp} (Sent on ${formattedDate})`,
+        from: process.env.TWILIO_PHONE,
+        to: mobile
+      });
+    }
+
+    console.log('OTP sent via email and SMS');
     res.render('otp');
+
   } catch (err) {
     console.error('Failed to send OTP:', err.message);
     res.send('Failed to send OTP. Please try again.');
   }
 });
+
 
 
 app.post('/verify-otp', (req, res) => {
