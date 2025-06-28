@@ -37,6 +37,19 @@ const otherRoutes = require('./routes/other');
 const authMiddleware = require('./middleware/auth');
 const Order = require('./models/Order');  // Import Order model
 
+
+
+//RAZORPAY
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+
+const razorpayInstance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+
+
 const app = express();
 app.set('trust proxy', 1); // Trust first proxy (like Render, Heroku, Nginx)
 
@@ -342,6 +355,61 @@ app.use('/',authMiddleware, showAllProductDetails);
 //CHECK THE ORDER DETAILS BY THE HELP OF OORDER ID
 const checkOrderById = require('./routes/checkOrderById');
 app.use('/check-order', checkOrderById);
+
+
+
+//RAZORPAY PAYMENT INTEGRATION
+app.post('/api/create-order', async (req, res) => {
+  const { amount } = req.body; // amount in rupees
+
+  try {
+    const order = await razorpayInstance.orders.create({
+      amount: amount * 100, // Razorpay uses paisa
+      currency: 'INR',
+      receipt: `receipt_${Date.now()}`
+    });
+
+    res.json({
+      success: true,
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
+      key: process.env.RAZORPAY_KEY_ID,
+    });
+  } catch (err) {
+    console.error('❌ Razorpay Order Error:', err);
+    res.status(500).json({ success: false, message: 'Failed to create Razorpay order' });
+  }
+});
+
+// Handle Razorpay payment verification
+app.post('/api/verify-payment', async (req, res) => {
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+    orderDetails
+  } = req.body;
+
+  const generated_signature = crypto
+    .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest('hex');
+
+  if (generated_signature === razorpay_signature) {
+    const order = new Order(orderDetails);
+    await order.save();
+
+    res.json({ success: true, message: 'Payment verified and order saved!' });
+  } else {
+    res.status(400).json({ success: false, message: 'Invalid payment signature' });
+  }
+});
+
+
+
+
+
 
 
 const PORT = process.env.PORT || 3001;
