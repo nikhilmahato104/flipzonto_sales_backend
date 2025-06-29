@@ -92,7 +92,7 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: {
-    maxAge: 1000 * 60 * 60, 
+    maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
     secure: false 
   }
 }));
@@ -342,10 +342,6 @@ app.use('/',authMiddleware, showAllProductDetails);
 //CHECK THE ORDER DETAILS BY THE HELP OF OORDER ID
 const checkOrderById = require('./routes/checkOrderById');
 app.use('/check-order', checkOrderById);
-
-
-const paymentRoutes = require('./routes/payment');
-app.use('/payment', paymentRoutes);
 
 
 const PORT = process.env.PORT || 3001;
