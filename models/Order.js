@@ -99,7 +99,8 @@ const orderSchema = new mongoose.Schema({
       image: String,
       rate: Number,
       quantity: Number,
-      category: String
+      category: String,
+      brandName: String
     }
   ],
   salesmanName: String,
