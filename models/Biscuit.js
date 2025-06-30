@@ -16,7 +16,8 @@ const biscuitSchema = new mongoose.Schema({
     set: roundTwo
   },
   total_weight: { type: String, required: true },
-  available_jar: { type: Number, required: true }
+  available_jar: { type: Number, required: true },
+  brand_name: { type: String, required: true }  // <-- Added field
 }, { timestamps: true });
 
 module.exports = mongoose.model('Biscuit', biscuitSchema);
