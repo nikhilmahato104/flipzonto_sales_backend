@@ -42,8 +42,8 @@ app.set('trust proxy', 1); // Trust first proxy (like Render, Heroku, Nginx)
 
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true
 }).then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ DB Error:', err));
 
