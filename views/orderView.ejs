@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Order Details</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .subtotal {
+      font-weight: bold;
+      background-color: #d3ffd3;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Order Details</h1>
+  <p><strong>Shop:</strong> <%= order.shopDetails.shopName %></p>
+  <p><strong>Owner:</strong> <%= order.shopDetails.shopOwnerName %></p>
+  <p><strong>Contact:</strong> <%= order.shopDetails.contact %></p>
+  <p><strong>Address:</strong> <%= order.shopDetails.address %></p>
+  <p><strong>Date:</strong> <%= formattedDate %></p>
+  <p><strong>Status:</strong> <%= order.shipped ? 'Shipped' : 'Not Shipped' %></p>
+  <p><strong>Comment:</strong> <%= order.comment %></p>
+
+  <table>
+    <tr>
+      <th>Item Name</th>
+      <th>Category</th>
+      <th>Rate (₹)</th>
+      <th>Quantity</th>
+      <th>Total (₹)</th>
+    </tr>
+    <% order.cartItems.forEach(item => { %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= item.category %></td>
+        <td><%= item.rate %></td>
+        <td><%= item.quantity %></td>
+        <td><%= item.rate * item.quantity %></td>
+      </tr>
+    <% }); %>
+  </table>
+
+  <p class="subtotal">Subtotal: ₹<%= subtotal.toFixed(2) %></p>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fetched Orders</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f2f2;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .refresh-btn {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .refresh-btn-page {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      position: fixed;
+    }
+    .order {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .order.shipped {
+      background-color: #d4edda;
+    }
+    .order-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .shop-info {
+      flex: 1;
+    }
+    .shop-image {
+      width: 150px;
+      height: auto;
+      border-radius: 8px;
+      margin-left: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    td img {
+      width: 80px;
+      height: auto;
+      border-radius: 4px;
+    }
+    .toggle-btn {
+      margin-top: 15px;
+      margin-right: 10px;
+      padding: 8px 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .no-orders {
+      text-align: center;
+      font-size: 20px;
+      color: #888;
+    }
+    .filters {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filters label,
+    .filters select,
+    .filters input {
+      margin: 0 5px;
+      font-size: 16px;
+    }
+  </style>
+
+  <!-- jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    function refreshPage() {
+      location.reload();
+    }
+
+    async function toggleShipped(orderId) {
+      try {
+        const response = await fetch('/toggle-shipped/' + orderId, { method: 'POST' });
+        if (response.ok) {
+          location.reload();
+        } else {
+          alert('Error toggling shipped status');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Server error');
+      }
+    }
+
+    function applyFilters() {
+      const dateFilter = document.getElementById('filterDate').value;
+      const shippedFilter = document.getElementById('filterShipped').value;
+      const orders = document.querySelectorAll('.order');
+
+      orders.forEach(order => {
+        const orderDate = order.getAttribute('data-date');
+        const isShipped = order.getAttribute('data-shipped');
+        const dateMatch = !dateFilter || orderDate === dateFilter;
+        const shippedMatch = !shippedFilter || isShipped === shippedFilter;
+        order.style.display = (dateMatch && shippedMatch) ? '' : 'none';
+      });
+    }
+
+    
+    async function downloadInvoice(orderId) {
+    const { jsPDF } = window.jspdf;
+    const orderEl = document.getElementById(`order-${orderId}`);
+    if (!orderEl) return;
+
+    const doc = new jsPDF();
+    let y = 10;
+
+    // Header
+    doc.setFontSize(18);
+    doc.text('Thank you for shopping with FlipZonto', 10, y);
+    y += 10;
+
+    doc.setFontSize(12);
+    doc.text('Verified by Chandan Sharma and Akash Yadav.', 10, y);
+    y += 20;
+
+    // Helper to add labeled text
+    function addText(label, value) {
+      doc.text(`${label}: ${value}`, 10, y);
+      y += 10;
+    }
+
+    const shopName = orderEl.querySelector('h2')?.textContent || '';
+    const owner = orderEl.querySelector('.shop-info p:nth-of-type(1)')?.textContent || '';
+    const contact = orderEl.querySelector('.shop-info p:nth-of-type(2)')?.textContent || '';
+    const address = orderEl.querySelector('.shop-info p:nth-of-type(3)')?.textContent || '';
+    const salesman = orderEl.querySelector('.shop-info p:nth-of-type(4)')?.textContent || '';
+    const comment = orderEl.querySelector('.shop-info p:nth-of-type(5)')?.textContent || '';
+    const date = orderEl.querySelector('.shop-info p:nth-of-type(6)')?.textContent || '';
+    const status = orderEl.querySelector('.shop-info p:nth-of-type(7)')?.textContent || '';
+
+    addText('Shop', shopName);
+    addText('Owner', owner);
+    addText('Contact', contact);
+    addText('Address', address);
+    addText('Salesman', salesman);
+    addText('Comment', comment);
+    addText('Date', date);
+    addText('Status', status);
+
+    y += 10;
+    doc.text('Cart Items:', 10, y);
+    y += 10;
+
+    // Calculate subtotal
+    const rows = Array.from(orderEl.querySelectorAll('tbody tr'));
+    let subtotal = 0;
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0]?.textContent || '';
+        const category = cells[1]?.textContent || '';
+        const rateText = cells[2]?.textContent?.replace(/[₹,]/g, '') || '0';
+        const qtyText = cells[3]?.textContent || '0';
+
+        const rate = parseFloat(rateText);
+        const qty = parseInt(qtyText, 10);
+        const lineTotal = rate * qty;
+
+        subtotal += lineTotal;
+
+        doc.text(`• ${name} | ${category} | ₹${rate} × ${qty} = ₹${lineTotal.toFixed(2)}`, 10, y);
+        y += 8;
+
+        if (y > 280) {
+            doc.addPage();
+            y = 10;
+        }
+    });
+
+    // Show subtotal at end
+    y += 10;
+    doc.setFontSize(14);
+    doc.text(`Subtotal: ₹${subtotal.toFixed(2)}`, 10, y);
+
+    // Save PDF
+    const fileName = `${shopName.replace(/\s+/g, '_')}_Invoice.pdf`;
+    doc.save(fileName);
+}
+
+
+  </script>
+</head>
+<body>
+    <button class="refresh-btn-page" onclick="refreshPage()">Refresh Page 🔄</button>
+
+
+  <h1> All Order details Orders</h1>
+
+  <div class="filters">
+    <label for="filterDate">Order Date:</label>
+    <input type="date" id="filterDate">
+
+    <label for="filterShipped">Shipped:</label>
+    <select id="filterShipped">
+      <option value="">All</option>
+      <option value="true">Shipped</option>
+      <option value="false">Not Shipped</option>
+    </select>
+
+    <button class="refresh-btn" onclick="applyFilters()">Apply Filters 🔍</button>
+    <button class="refresh-btn" onclick="refreshPage()">Reset Filters 🔄</button>
+  </div>
+
+  <% if (orders.length === 0) { %>
+    <p class="no-orders">No orders found.</p>
+  <% } else { %>
+    <% orders.forEach(order => { %>
+      <div class="order <%= order.shipped ? 'shipped' : '' %>"
+           id="order-<%= order._id %>"
+           data-date="<%= order.orderDate ? order.orderDate.toISOString().split('T')[0] : '' %>"
+           data-shipped="<%= order.shipped %>">
+
+        <div class="order-header">
+          <div class="shop-info">
+            <h2>Shop: <%= order.shopDetails.shopName %></h2>
+            <p>Owner: <%= order.shopDetails.shopOwnerName %></p>
+            <p>Contact: <%= order.shopDetails.contact %></p>
+            <p>Address: <%= order.shopDetails.address %>, <%= order.shopDetails.region %> - <%= order.shopDetails.location %></p>
+            <p>Salesman: <%= order.salesmanName %> (Contact: <%= order.salesmanContact %>)</p>
+            <p>Comment: <%= order.comment %></p>
+            <p>Order Date: <%= order.orderDate ? order.orderDate.toDateString() : '' %></p>
+            <p>Status: <strong><%= order.shipped ? 'Shipped ✅' : 'Not Shipped ❌' %></strong></p>
+          </div>
+          <div>
+            <img class="shop-image" src="<%= order.shopDetails.imageUrl %>" alt="Shop Image">
+          </div>
+        </div>
+
+        <h3>Cart Items:</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Category</th>
+              <th>Rate (₹)</th>
+              <th>Quantity</th>
+              <th>Image</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% order.cartItems.forEach(item => { %>
+              <tr>
+                <td><%= item.name %></td>
+                <td><%= item.category %></td>
+                <td><%= item.rate %></td>
+                <td><%= item.quantity %></td>
+                <td><img src="<%= item.image %>" alt="<%= item.name %>"></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
+        <button class="toggle-btn" onclick="toggleShipped('<%= order._id %>')">Toggle Shipped</button>
+        <button class="toggle-btn" onclick="downloadInvoice('<%= order._id %>')">Download Invoice 🧾</button>
+      </div>
+    <% }) %>
+  <% } %>
+
+
+
+  <script>
+    function refreshPage() {
+      location.reload();
+    }
+  </script>
+</body>
+</html>
