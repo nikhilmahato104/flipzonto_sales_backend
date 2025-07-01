@@ -100,7 +100,7 @@ const orderSchema = new mongoose.Schema({
       rate: Number,
       quantity: Number,
       category: String,
-      brandName: String
+      brand_name: String
     }
   ],
   salesmanName: String,
