@@ -92,7 +92,7 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
+    maxAge: 1000 * 60 * 60 * 24 * 300, // 30 month
     secure: false 
   }
 }));
@@ -286,7 +286,7 @@ app.post("/api/orders", async (req, res) => {
   }
 });
 
-app.get('/orderfetchfromDB', async (req, res) => {
+app.get('/orderfetchfromDB', authMiddleware ,async (req, res) => {
   try {
     const orders = await Order.find();
     res.render('orderfetchfromDB', { orders }); // render view with fetched orders
