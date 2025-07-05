@@ -20,6 +20,7 @@ const colddrinkRoutes = require('./routes/colddrink');
 const drinkRoutes = require('./routes/drink');
 const detergentbarRoutes = require('./routes/detergentbar');
 const detergentpowderRoutes = require('./routes/detergentpowder');
+const electricRoutes = require('./routes/electric'); //electric routes
 const oilRoutes = require('./routes/oil');
 const shampooRoutes = require('./routes/shampoo');
 const kirnaRoutes = require('./routes/kirana');
@@ -237,6 +238,7 @@ app.use(biscuitRoutes);
 app.use(drinkRoutes);
 app.use(detergentpowderRoutes);
 app.use(detergentbarRoutes);
+app.use(electricRoutes);   //electric 
 app.use(oilRoutes);
 app.use(shampooRoutes);
 app.use(kirnaRoutes);
@@ -256,6 +258,7 @@ app.use('/colddrink', colddrinkRoutes);
 app.use('/drink', drinkRoutes);
 app.use('/detergentbar', detergentbarRoutes);
 app.use('/detergentpowder', detergentpowderRoutes);
+app.use('/electric',electricRoutes);  //elecric 
 app.use('/kirana',kirnaRoutes);
 app.use('/noodles', noodlesRoutes);
 app.use('/napkin', napkinRoutes); //napkin

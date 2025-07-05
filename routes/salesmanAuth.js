@@ -131,5 +131,4 @@ router.post('/login', loginLimiter, async (req, res) => {
     res.status(200).json({ message: 'An error occurred. Please try again later.' });
   }
 });
-
 module.exports = router;
