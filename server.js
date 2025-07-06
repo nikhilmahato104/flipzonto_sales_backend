@@ -16,6 +16,7 @@ const babycareRoutes = require('./routes/babycare');  //bugs 1 X     working thi
 //const bathingsoapRoutes = require('./routes/bathingsoap');  // bugs 2 working this
 const chocolateRoutes = require('./routes/chocolate');
 const biscuitRoutes = require('./routes/biscuit');
+const bathingsoapRoutes = require('./routes/bathingsoap');     
 const colddrinkRoutes = require('./routes/colddrink');
 const drinkRoutes = require('./routes/drink');
 const detergentbarRoutes = require('./routes/detergentbar');
@@ -232,6 +233,7 @@ app.use('/salesman-auth', salesmanAuthRoutes);
 // products routes
 app.use(babycareRoutes); // Baby Care
 // app.use(bathingsoapRoutes); // Bathing Soap
+app.use(bathingsoapRoutes);
 app.use(chocolateRoutes); 
 app.use(colddrinkRoutes);
 app.use(biscuitRoutes);
@@ -252,7 +254,11 @@ app.use(otherRoutes);
 
 app.use('/babycare', babycareRoutes); //babycare
 //app.use('/bathingsoap', bathingsoapRoutes); //bathingsoap
+
 app.use('/biscuit', biscuitRoutes);
+
+app.use('/bathingsoap',bathingsoapRoutes); 
+
 app.use('/chocolate', chocolateRoutes);
 app.use('/colddrink', colddrinkRoutes);
 app.use('/drink', drinkRoutes);
