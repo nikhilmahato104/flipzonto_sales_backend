@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Monthly Sales Table - <%= year %></title>
+  <style>
+    table, th, td {
+      border: 1px solid #ddd;
+      border-collapse: collapse;
+      padding: 10px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    thead {
+      background-color: #1e3a8a;
+      color: white;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Monthly Sales Table - <%= year %></h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Salesman</th>
+        <th>January</th>
+        <th>February</th>
+        <th>March</th>
+        <th>April</th>
+        <th>May</th>
+        <th>June</th>
+        <th>July</th>
+        <th>August</th>
+        <th>September</th>
+        <th>October</th>
+        <th>November</th>
+        <th>December</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% results.forEach(salesman => { %>
+        <tr>
+          <td><strong><%= salesman.name %></strong></td>
+          <% salesman.monthlySales.forEach(amount => { %>
+            <td>₹<%= amount.toFixed(2) %></td>
+          <% }) %>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>
+
+
+
+
+const express = require('express');
+const router = express.Router();
+const Order = require('../models/Order');
+
+const salesmen = ['Akash', 'Chandan', 'Rony', 'Manish', 'Nikhil'];
+
+router.get('/salemanorderdetails', async (req, res) => {
+  try {
+    const results = [];
+
+    const year = new Date().getFullYear(); // 2025
+
+    for (const name of salesmen) {
+      let monthlySales = Array(12).fill(0); // Jan to Dec
+
+      const orders = await Order.find({
+        salesmanName: name,
+        orderDate: {
+          $gte: new Date(`${year}-01-01T00:00:00.000Z`),
+          $lt: new Date(`${year + 1}-01-01T00:00:00.000Z`),
+        },
+      });
+
+      orders.forEach((order) => {
+        const date = new Date(order.orderDate);
+        const month = date.getUTCMonth(); // 0-based index
+
+        const orderValue = order.cartItems.reduce((sum, item) => {
+          return sum + item.rate * item.quantity;
+        }, 0);
+
+        monthlySales[month] += orderValue;
+      });
+
+      results.push({ name, monthlySales });
+    }
+
+    res.render('salesman-cards', { results, year });
+  } catch (error) {
+    console.error('Error in monthly sales:', error);
+    res.status(500).send('Server Error');
+  }
+});
+
+module.exports = router;

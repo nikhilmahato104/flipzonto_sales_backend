@@ -339,6 +339,10 @@ app.get("/api/orders", async (req, res) => {
   }
 });
 
+//saleman order track in table
+const salemanOrderRoutes = require('./routes/salemanorderdetails');
+app.use(salemanOrderRoutes);
+
 
 const showAllProductDetails = require('./routes/showallproductdetails');
 app.use('/',authMiddleware, showAllProductDetails);

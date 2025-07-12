@@ -10,9 +10,15 @@
             <td><%= salesman.salesman_name %></td>
             <td>
                 
-                <form action="/salesman/delete/<%= salesman._id %>" method="POST" style="display:inline;">
-                    <button type="submit" class="btn abc">Delete</button>
-                </form>
+               <form 
+  action="/salesman/delete/<%= salesman._id %>" 
+  method="POST" 
+  style="display:inline;" 
+  onsubmit="return confirmDelete()"
+>
+    <button type="submit" class="btn abc">Delete</button>
+</form>
+
             </td>
         </tr>
     <% }) %>
@@ -22,6 +28,18 @@
 <div style="margin-top: 20px;">
     <a href="/salesman/new" class="btn">Add Salesman</a>
 </div>
+<script>
+  function confirmDelete() {
+    const answer = prompt("Security Check: What is 2 + 2?");
+    if (answer === null) return false; // Cancelled
+    if (parseInt(answer.trim()) === 4) {
+      return confirm("Are you sure you want to delete this salesman?");
+    } else {
+      alert("Incorrect answer. Deletion cancelled.");
+      return false;
+    }
+  }
+</script>
 
 <style>
     /* Responsive Full-Width Styling */
