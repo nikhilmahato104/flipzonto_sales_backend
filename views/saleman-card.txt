@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sales Reports - <%= year %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  .live-heading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .live-dot {
+    width: 14px;
+    height: 14px;
+    background-color: #10b981; /* Tailwind green-500 */
+    border-radius: 50%;
+    box-shadow: 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.9);
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    70% {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    }
+    100% {
+      transform: scale(0.9);
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+  }
+</style>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      /* padding: 10px; */
+    }
+
+    h2, h3 {
+      text-align: center;
+    }
+
+    select, button {
+      display: block;
+      margin: 15px auto;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow-x: auto;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    thead {
+      background-color: #1e3a8a;
+      color: white;
+    }
+
+    .highlight-today {
+      background-color: #a7f3d0 !important;
+      font-weight: bold;
+    }
+
+    .scroll-container {
+      overflow-x: auto;
+    }
+
+    @media screen and (max-width: 768px) {
+      th, td {
+        padding: 6px;
+        font-size: 12px;
+      }
+      select, button {
+        font-size: 14px;
+      }
+    }
+
+    .export-btn {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .export-btn:hover {
+      background-color: #45a049;
+    }
+    button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2c5282;
+}
+
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    function showDailyTable(monthKey) {
+      const allTables = document.querySelectorAll('.daily-table');
+      allTables.forEach(tbl => tbl.style.display = 'none');
+      const activeTable = document.getElementById('daily-' + monthKey);
+      if (activeTable) activeTable.style.display = 'table';
+    }
+
+   
+  </script>
+</head>
+<body>
+  
+   <!-- 🔝 Fixed Top Navbar with 2 Buttons -->
+<div style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  background-color: #1e3a8a;
+  z-index: 9999;
+">
+  
+  <a href="/" style="flex: 1; text-align: center; text-decoration: none;">
+    <button style="
+      width: 100%;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      cursor: pointer;
+    ">🏠 Home</button>
+  </a>
+  <button onclick="window.location.reload()" style="
+    flex: 1;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-right: 1px solid white;
+  ">🔁 Refresh</button>
+
+</div>
+
+<!-- Push content down below the fixed navbar -->
+<div style="margin-top: 80px;"></div>
+
+ 
+  <% 
+    const todayUTC = new Date(); 
+    const todayDay = todayUTC.getUTCDate(); 
+    const todayMonth = todayUTC.getUTCMonth();
+  %>
+
+  <!-- 🔰 TODAY'S SALES SUMMARY -->
+  <div id="today-summary">
+<h2 class="live-heading">
+  <span class="live-dot"></span>Today's Sales Summary (<%= todayUTC.toUTCString().slice(0, 16) %>)
+  
+</h2>
+
+
+
+    <div class="scroll-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Salesman</th>
+            <th>Total ₹</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% results.forEach(salesman => {
+            const todaySale = dailyMap[`${year}-${String(todayMonth + 1).padStart(2, '0')}`]?.[salesman.name]?.[todayDay - 1] || 0;
+          %>
+            <tr>
+              <td><strong><%= salesman.name %></strong></td>
+              <td class="highlight-today">₹<%= todaySale.toFixed(2) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+
+  
+
+  <!-- 🔷 FULL REPORT SECTION -->
+  <div id="report-section">
+    <h2>📊 Monthly Sales Table - <%= year %></h2>
+    <div class="scroll-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Salesman</th>
+            <% ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].forEach(month => { %>
+              <th><%= month %></th>
+            <% }) %>
+          </tr>
+        </thead>
+        <tbody>
+          <% results.forEach(salesman => { %>
+            <tr>
+              <td><strong><%= salesman.name %></strong></td>
+              <% salesman.monthlySales.forEach(amount => { %>
+                <td>₹<%= amount.toFixed(2) %></td>
+              <% }) %>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <h2>📅 Daily Sales Table - Select Month</h2>
+    <select onchange="showDailyTable(this.value)">
+      <option value="">-- Select Month --</option>
+      <% monthOptions.forEach(month => { %>
+        <option value="<%= month %>"><%= new Date(month + "-01").toLocaleString('default', { month: 'long', year: 'numeric' }) %></option>
+      <% }) %>
+    </select> -->
+    <h2>📅 Daily Sales Table - Select Month</h2>
+<select id="monthSelect" onchange="showDailyTable(this.value)">
+  <option value="">-- Select Month --</option>
+  <% monthOptions.forEach(month => { %>
+    <option value="<%= month %>"><%= new Date(month + "-01").toLocaleString('default', { month: 'long', year: 'numeric' }) %></option>
+  <% }) %>
+</select>
+
+
+    <% monthOptions.forEach(monthKey => {
+      const selectedMonth = new Date(monthKey + "-01");
+    %>
+      <div class="scroll-container">
+        <table class="daily-table" id="daily-<%= monthKey %>" style="display: none;">
+          <thead>
+            <tr>
+              <th>Salesman</th>
+              <% for (let d = 1; d <= 31; d++) {
+                const isToday = d === todayDay && selectedMonth.getUTCMonth() === todayUTC.getUTCMonth();
+              %>
+                <th class="<%= isToday ? 'highlight-today' : '' %>"><%= d %></th>
+              <% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let name in dailyMap[monthKey]) { %>
+              <tr>
+                <td><strong><%= name %></strong></td>
+                <% dailyMap[monthKey][name].forEach((amount, index) => {
+                  const isToday = (index + 1) === todayDay && selectedMonth.getUTCMonth() === todayUTC.getUTCMonth();
+                %>
+                  <td class="<%= isToday ? 'highlight-today' : '' %>">₹<%= amount.toFixed(2) %></td>
+                <% }) %>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    <% }) %>
+  </div>
+  
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const currentMonthKey = `${year}-${month}`;
+    
+    const select = document.getElementById('monthSelect');
+    const option = Array.from(select.options).find(opt => opt.value === currentMonthKey);
+    
+    if (option) {
+      option.selected = true;
+      showDailyTable(currentMonthKey);
+    }
+  });
+</script>
+
+
+</body>
+</html>

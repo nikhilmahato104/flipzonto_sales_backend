@@ -64,6 +64,7 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://192.168.137.1:5173',
   'https://b-to-b-apixvuzum.onrender.com',
+  'https://b-to-b-apixvuzum-ag91.onrender.com',
   'https://fzt-api-frilu457.onrender.com',
   'https://sales-manpanel-react-darkhower.netlify.app',
 

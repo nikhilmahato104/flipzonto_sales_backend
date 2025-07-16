@@ -48,7 +48,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
-const salesmen = ['Akash', 'Chandan', 'Rony', 'Manish', 'Nikhil'];
+const salesmen = ['Akash', 'Chandan', 'Rony', 'Manish'];
 
 router.get('/salemanorderdetails', async (req, res) => {
   try {
