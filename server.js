@@ -175,7 +175,7 @@ mongoose.connect(process.env.MONGO_URI, {
 //   methods: ['GET', 'POST', 'PUT'],
 //   credentials: true
 // }));
-const allowedOrigins = ['https://flipzonto.com', 'http://localhost:5173'];
+const allowedOrigins = ['https://flipzonto.com', 'http://localhost:5173','https://admin.flipzonto.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
