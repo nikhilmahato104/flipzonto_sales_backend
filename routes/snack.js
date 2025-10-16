@@ -3,7 +3,7 @@ const router = express.Router();
 const Snack = require('../models/Snack');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all snacks for frontend
+//  PUBLIC ROUTE: Fetch all snacks for frontend
 router.get('/api', async (req, res) => {
   try {
     const snacks = await Snack.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: snack });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error('PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all snacks
+//  ADMIN ONLY: View all snacks
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const snacks = await Snack.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('snack/create');
 });
 
-// 🔐 ADMIN ONLY: Create snack
+//  ADMIN ONLY: Create snack
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Snack.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const snack = await Snack.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update snack
+//  ADMIN ONLY: Update snack
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Snack.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete snack
+//  ADMIN ONLY: Delete snack
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Snack.findByIdAndDelete(req.params.id);

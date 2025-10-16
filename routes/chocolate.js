@@ -3,7 +3,7 @@ const router = express.Router();
 const Chocolate = require('../models/Chocolate');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all chocolates for frontend
+//  PUBLIC ROUTE: Fetch all chocolates for frontend
 router.get('/api', async (req, res) => {
   try {
     const chocolates = await Chocolate.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ ✅ ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅ ✅ ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -41,12 +41,12 @@ router.put('/api/order/:id', async (req, res) => {
     // Respond with the updated stock info
     res.json({ message: 'Stock updated successfully!', updated: chocolate });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all chocolates
+// ADMIN ONLY: View all chocolates
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const chocolates = await Chocolate.find({});
@@ -56,12 +56,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+// ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('chocolate/create');
 });
 
-// 🔐 ADMIN ONLY: Create chocolate
+// ADMIN ONLY: Create chocolate
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Chocolate.create(req.body);
@@ -71,7 +71,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+// ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const chocolate = await Chocolate.findById(req.params.id);
@@ -81,7 +81,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update chocolate
+// ADMIN ONLY: Update chocolate
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Chocolate.findByIdAndUpdate(req.params.id, req.body);
@@ -91,7 +91,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete chocolate
+//  ADMIN ONLY: Delete chocolate
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Chocolate.findByIdAndDelete(req.params.id);

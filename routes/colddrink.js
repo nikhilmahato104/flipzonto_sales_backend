@@ -3,7 +3,7 @@ const router = express.Router();
 const Colddrink = require('../models/Colddrink');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all colddrinks for frontend
+//  PUBLIC ROUTE: Fetch all colddrinks for frontend
 router.get('/api', async (req, res) => {
   try {
     const colddrinks = await Colddrink.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ ✅ ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅ ✅ ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: colddrink });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all colddrinks
+// ADMIN ONLY: View all colddrinks
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const colddrinks = await Colddrink.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('colddrink/create');
 });
 
-// 🔐 ADMIN ONLY: Create colddrink
+// ADMIN ONLY: Create colddrink
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Colddrink.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const colddrink = await Colddrink.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update colddrink
+//  ADMIN ONLY: Update colddrink
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Colddrink.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete colddrink
+//  ADMIN ONLY: Delete colddrink
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Colddrink.findByIdAndDelete(req.params.id);

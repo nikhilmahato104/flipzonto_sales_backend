@@ -3,7 +3,7 @@ const router = express.Router();
 const Tea = require('../models/Tea');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all tea products for frontend
+//  PUBLIC ROUTE: Fetch all tea products for frontend
 router.get('/api', async (req, res) => {
   try {
     const teas = await Tea.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ STOCK REDUCTION
+//  STOCK REDUCTION
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: tea });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all teas
+//  ADMIN ONLY: View all teas
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const teas = await Tea.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('tea/create');
 });
 
-// 🔐 ADMIN ONLY: Create tea
+//  ADMIN ONLY: Create tea
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Tea.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const tea = await Tea.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update tea
+//  ADMIN ONLY: Update tea
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Tea.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete tea
+//  ADMIN ONLY: Delete tea
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Tea.findByIdAndDelete(req.params.id);

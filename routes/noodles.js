@@ -3,7 +3,7 @@ const router = express.Router();
 const Noodles = require('../models/Noodles');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all noodles for frontend
+//  PUBLIC ROUTE: Fetch all noodles for frontend
 router.get('/api', async (req, res) => {
   try {
     const noodles = await Noodles.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ STOCK REDUCTION
+//  STOCK REDUCTION
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: noodle });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all noodles
+//  ADMIN ONLY: View all noodles
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const noodles = await Noodles.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('noodles/create');
 });
 
-// 🔐 ADMIN ONLY: Create noodle
+// ADMIN ONLY: Create noodle
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Noodles.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+// ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const noodle = await Noodles.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update noodle
+// ADMIN ONLY: Update noodle
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Noodles.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete noodle
+//  ADMIN ONLY: Delete noodle
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Noodles.findByIdAndDelete(req.params.id);

@@ -3,7 +3,7 @@ const router = express.Router();
 const DetergentBar = require('../models/DetergentBar');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all detergent bars for frontend
+//  PUBLIC ROUTE: Fetch all detergent bars for frontend
 router.get('/api', async (req, res) => {
   try {
     const detergentBars = await DetergentBar.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ ✅ ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅ ✅ ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -41,12 +41,12 @@ router.put('/api/order/:id', async (req, res) => {
     // Respond with the updated stock info
     res.json({ message: 'Stock updated successfully!', updated: detergentBar });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all detergent bars
+//  ADMIN ONLY: View all detergent bars
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const detergentBars = await DetergentBar.find({});
@@ -56,12 +56,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('detergentbar/create');
 });
 
-// 🔐 ADMIN ONLY: Create detergent bar
+//  ADMIN ONLY: Create detergent bar
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await DetergentBar.create(req.body);
@@ -71,7 +71,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const detergentBar = await DetergentBar.findById(req.params.id);
@@ -81,7 +81,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update detergent bar
+//  ADMIN ONLY: Update detergent bar
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await DetergentBar.findByIdAndUpdate(req.params.id, req.body);
@@ -91,7 +91,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete detergent bar
+//  ADMIN ONLY: Delete detergent bar
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await DetergentBar.findByIdAndDelete(req.params.id);

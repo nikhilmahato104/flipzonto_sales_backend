@@ -3,7 +3,7 @@ const router = express.Router();
 const Toothpaste = require('../models/Toothpaste');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all toothpaste items for frontend
+//  PUBLIC ROUTE: Fetch all toothpaste items for frontend
 router.get('/api', async (req, res) => {
   try {
     const toothpastes = await Toothpaste.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: toothpaste });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN: View all toothpastes
+//  ADMIN: View all toothpastes
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const toothpastes = await Toothpaste.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN: Create form
+//  ADMIN: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('toothpaste/create');
 });
 
-// 🔐 ADMIN: Create toothpaste
+//  ADMIN: Create toothpaste
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Toothpaste.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN: Edit form
+//  ADMIN: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const toothpaste = await Toothpaste.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN: Update toothpaste
+//  ADMIN: Update toothpaste
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Toothpaste.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN: Delete toothpaste
+//  ADMIN: Delete toothpaste
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Toothpaste.findByIdAndDelete(req.params.id);

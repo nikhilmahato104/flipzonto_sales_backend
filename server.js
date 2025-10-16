@@ -42,14 +42,14 @@ const Order = require('./models/Order');  // Import Order model
 const app = express();
 app.set('trust proxy', 1); // Trust first proxy (like Render, Heroku, Nginx)
 
-// ✅ MongoDB Connection
+//  MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('❌ DB Error:', err));
+}).then(() => console.log(' MongoDB connected'))
+  .catch(err => console.error(' DB Error:', err));
 
-// ✅ Middleware Setup
+//  Middleware Setup
 // app.use(cors({
 //   origin: 'https://flipzonto.com', // Only allow frontend site
 //   methods: ['GET', 'POST', 'PUT'],
@@ -67,6 +67,7 @@ const allowedOrigins = [
   'https://b-to-b-apixvuzum-ag91.onrender.com',
   'https://fzt-api-frilu457.onrender.com',
   'https://sales-manpanel-react-darkhower.netlify.app',
+  'https://admin.flipzonto.com',
 
 ];
 
@@ -154,7 +155,7 @@ app.post('/login', async (req, res) => {
   const subject = `Flipzonto Admin Login OTP - ${formattedDate}`;
   const htmlMessage = `
     <div style="font-family: 'Segoe UI', sans-serif; max-width: 500px; margin: auto; padding: 1.5rem; background: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
-      <h2 style="color: #1e3a8a;">🔐 Flipzonto Admin OTP</h2>
+      <h2 style="color: #1e3a8a;"> Flipzonto Admin OTP</h2>
       <p>Your OTP is:</p>
       <h1 style="color: red;">${otp}</h1>
       <p style="color: gray;">Date: ${formattedDate}</p>
@@ -166,24 +167,24 @@ app.post('/login', async (req, res) => {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: [
-        '26krakashyadav@gmail.com',
+        
         'nikhilmahato104@gmail.com',
-        'chandankumarsharma8124@gmail.com'
+        
       ],
       subject,
       html: htmlMessage
     });
 
-    // Send OTP via Twilio SMS to predefined Indian numbers
-    const mobileRecipients = ['+919304260733', '+919661461412']; // <-- Replace with actual numbers
+    // Send OTP via Twilio SMS to 
+    // const mobileRecipients = ['+919304260733'];
 
-    for (const mobile of mobileRecipients) {
-      await twilioClient.messages.create({
-        body: `🔐 Flipzonto OTP: ${otp} (Sent on ${formattedDate})`,
-        from: process.env.TWILIO_PHONE,
-        to: mobile
-      });
-    }
+    // for (const mobile of mobileRecipients) {
+    //   await twilioClient.messages.create({
+    //     body: ` Flipzonto OTP: ${otp} (Sent on ${formattedDate})`,
+    //     from: process.env.TWILIO_PHONE,
+    //     to: mobile
+    //   });
+    // }
 
     console.log('OTP sent via email and SMS');
     res.render('otp');
@@ -265,27 +266,26 @@ app.use('/colddrink', colddrinkRoutes);
 app.use('/drink', drinkRoutes);
 app.use('/detergentbar', detergentbarRoutes);
 app.use('/detergentpowder', detergentpowderRoutes);
-app.use('/electric',electricRoutes);  //elecric 
+app.use('/electric',electricRoutes);  //elecric 2
 app.use('/kirana',kirnaRoutes);
 app.use('/noodles', noodlesRoutes);
-app.use('/napkin', napkinRoutes); //napkin
+app.use('/napkin', napkinRoutes); //napkin new wala add kiye 
 app.use('/snack', snackRoutes);
 app.use('/oil',oilRoutes);
 app.use('/shampoo',shampooRoutes);
-app.use('/personalcare', personalcareRoutes); //personalcare
-app.use('/tea', teaRoutes); //tea
-app.use('/toothpaste', toothpasteRoutes); //toothpaste
+app.use('/personalcare', personalcareRoutes); //personalcare 1
+app.use('/tea', teaRoutes); //tea 3
+app.use('/toothpaste', toothpasteRoutes); //toothpaste 4
 app.use('/other',otherRoutes);
 
 // Order Route
 app.post("/api/orders", async (req, res) => {
   try {
-    const orderDetails = req.body; // Get order details from request body
+    const orderDetails = req.body; 
 
     // Create a new order
     const newOrder = new Order(orderDetails);
 
-    // Save the order to the database
     await newOrder.save();
 
     // Respond with success

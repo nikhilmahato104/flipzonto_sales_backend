@@ -3,8 +3,8 @@ const router = express.Router();
 const SalesmanAdmin = require('../models/SalesmanAdmin');
 const authMiddleware = require('../middleware/auth'); // Ensures only admin can modify salesman accounts
 
-// 🔐 ADMIN ONLY: Add a SalesmanAdmin
-// 🔐 ADMIN ONLY: Add a SalesmanAdmin with unique name check
+//  ADMIN ONLY: Add a SalesmanAdmin
+//  ADMIN ONLY: Add a SalesmanAdmin with unique name check
 router.post('/add', authMiddleware, async (req, res) => {
     try {
         const { salesman_name, password } = req.body;
@@ -27,7 +27,7 @@ router.post('/add', authMiddleware, async (req, res) => {
 });
 
 
-// 🔐 ADMIN ONLY: View all SalesmanAdmins
+//  ADMIN ONLY: View all SalesmanAdmins
 router.get('/', authMiddleware, async (req, res) => {
     try {
         const salesmen = await SalesmanAdmin.find({});
@@ -37,7 +37,7 @@ router.get('/', authMiddleware, async (req, res) => {
     }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
     try {
         const salesman = await SalesmanAdmin.findById(req.params.id);
@@ -47,7 +47,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// 🔐 ADMIN ONLY: Update salesman
+//  ADMIN ONLY: Update salesman
 router.post('/edit/:id', authMiddleware, async (req, res) => {
     try {
         await SalesmanAdmin.findByIdAndUpdate(req.params.id, req.body);
@@ -57,7 +57,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// 🔐 ADMIN ONLY: Delete salesman
+//  ADMIN ONLY: Delete salesman
 router.post('/delete/:id', authMiddleware, async (req, res) => {
     try {
         await SalesmanAdmin.findByIdAndDelete(req.params.id);
@@ -67,7 +67,7 @@ router.post('/delete/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// 🔐 ADMIN ONLY: Create form for adding a new salesman
+//  ADMIN ONLY: Create form for adding a new salesman
 router.get('/new', authMiddleware, (req, res) => {
     res.render('salesman/create');
   });

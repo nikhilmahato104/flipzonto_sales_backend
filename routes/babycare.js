@@ -3,7 +3,7 @@ const router = express.Router();
 const Babycare = require('../models/Babycare');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all babycare items for frontend
+// PUBLIC ROUTE: Fetch all babycare items for frontend
 router.get('/api', async (req, res) => {
   try {
     const babycareItems = await Babycare.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: item });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all babycare items
+//  ADMIN ONLY: View all babycare items
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const items = await Babycare.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('babycare/create');
 });
 
-// 🔐 ADMIN ONLY: Create babycare item
+//  ADMIN ONLY: Create babycare item
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Babycare.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const item = await Babycare.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update babycare item
+//  ADMIN ONLY: Update babycare item
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Babycare.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete babycare item
+//  ADMIN ONLY: Delete babycare item
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Babycare.findByIdAndDelete(req.params.id);

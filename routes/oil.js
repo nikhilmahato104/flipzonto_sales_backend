@@ -3,7 +3,7 @@ const router = express.Router();
 const Oil = require('../models/Oil'); // ✅ Import Oil model
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all oils for frontend
+//  PUBLIC ROUTE: Fetch all oils for frontend
 router.get('/api', async (req, res) => {
   try {
     const oils = await Oil.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: oil });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all oils
+// ADMIN ONLY: View all oils
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const oils = await Oil.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('oil/create');
 });
 
-// 🔐 ADMIN ONLY: Create oil
+//  ADMIN ONLY: Create oil
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Oil.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const oil = await Oil.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update oil
+//  ADMIN ONLY: Update oil
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Oil.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete oil
+//  ADMIN ONLY: Delete oil
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Oil.findByIdAndDelete(req.params.id);

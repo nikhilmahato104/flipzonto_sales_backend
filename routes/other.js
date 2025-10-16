@@ -3,7 +3,7 @@ const router = express.Router();
 const Other = require('../models/Other');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all "other" items for frontend
+//  PUBLIC ROUTE: Fetch all "other" items for frontend
 router.get('/api', async (req, res) => {
   try {
     const others = await Other.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ STOCK REDUCTION (like for chocolate)
+//  STOCK REDUCTION (like for chocolate)
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: other });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all
+//  ADMIN ONLY: View all
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const others = await Other.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('other/create');
 });
 
-// 🔐 ADMIN ONLY: Create item
+//  ADMIN ONLY: Create item
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Other.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const other = await Other.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update item
+//  ADMIN ONLY: Update item
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Other.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete item
+//  ADMIN ONLY: Delete item
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Other.findByIdAndDelete(req.params.id);

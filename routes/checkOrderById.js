@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   res.render('checkOrderForm');
 });
 
-// ✅ HTML View (EJS or similar)
+//  HTML View (EJS or similar)
 router.get('/view/:id', async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).lean();
@@ -28,7 +28,7 @@ router.get('/view/:id', async (req, res) => {
   }
 });
 
-// ✅ JSON API (for React, etc.)
+//  JSON API (for React, etc.)
 router.get('/json/:id', async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).lean();

@@ -3,7 +3,7 @@ const router = express.Router();
 const Biscuit = require('../models/Biscuit');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all biscuits for frontend
+// PUBLIC ROUTE: Fetch all biscuits for frontend
 router.get('/api', async (req, res) => {
   try {
     const biscuits = await Biscuit.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ ✅ ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅ ✅ ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -41,12 +41,12 @@ router.put('/api/order/:id', async (req, res) => {
     // Respond with the updated stock info
     res.json({ message: 'Stock updated successfully!', updated: biscuit });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error(' PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all biscuits
+//  ADMIN ONLY: View all biscuits
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const biscuits = await Biscuit.find({});
@@ -56,12 +56,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('biscuit/create');
 });
 
-// 🔐 ADMIN ONLY: Create biscuit
+//  ADMIN ONLY: Create biscuit
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Biscuit.create(req.body);
@@ -71,7 +71,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const biscuit = await Biscuit.findById(req.params.id);
@@ -81,7 +81,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update biscuit
+//  ADMIN ONLY: Update biscuit
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Biscuit.findByIdAndUpdate(req.params.id, req.body);
@@ -91,7 +91,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete biscuit
+//  ADMIN ONLY: Delete biscuit
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Biscuit.findByIdAndDelete(req.params.id);

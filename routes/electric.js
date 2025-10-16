@@ -3,7 +3,7 @@ const router = express.Router();
 const Electric = require('../models/Electric');
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all electric items for frontend
+//  PUBLIC ROUTE: Fetch all electric items for frontend
 router.get('/api', async (req, res) => {
   try {
     const items = await Electric.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ FIXED SINGLE ROUTE FOR STOCK REDUCTION ✅
+//  FIXED SINGLE ROUTE FOR STOCK REDUCTION 
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: item });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error('PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all electric items
+//  ADMIN ONLY: View all electric items
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const items = await Electric.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('electric/create');
 });
 
-// 🔐 ADMIN ONLY: Create electric item
+// ADMIN ONLY: Create electric item
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Electric.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const item = await Electric.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update electric item
+//  ADMIN ONLY: Update electric item
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Electric.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete electric item
+// ADMIN ONLY: Delete electric item
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Electric.findByIdAndDelete(req.params.id);

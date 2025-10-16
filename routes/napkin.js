@@ -3,7 +3,7 @@ const router = express.Router();
 const Napkin = require('../models/Napkin'); // Ensure this path is correct
 const authMiddleware = require('../middleware/auth');
 
-// 🔓 PUBLIC ROUTE: Fetch all napkins for frontend
+//  PUBLIC ROUTE: Fetch all napkins for frontend
 router.get('/api', async (req, res) => {
   try {
     const napkins = await Napkin.find();
@@ -13,7 +13,7 @@ router.get('/api', async (req, res) => {
   }
 });
 
-// ✅ STOCK REDUCTION ROUTE
+// STOCK REDUCTION ROUTE
 router.put('/api/order/:id', async (req, res) => {
   try {
     const { qty } = req.body;
@@ -36,12 +36,12 @@ router.put('/api/order/:id', async (req, res) => {
 
     res.json({ message: 'Stock updated successfully!', updated: napkin });
   } catch (err) {
-    console.error('❌ PUT error:', err.message);
+    console.error('PUT error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 🔐 ADMIN ONLY: View all napkins
+//  ADMIN ONLY: View all napkins
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const napkins = await Napkin.find({});
@@ -51,12 +51,12 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Create form
+//  ADMIN ONLY: Create form
 router.get('/new', authMiddleware, (req, res) => {
   res.render('napkin/create');
 });
 
-// 🔐 ADMIN ONLY: Create napkin
+//  ADMIN ONLY: Create napkin
 router.post('/new', authMiddleware, async (req, res) => {
   try {
     await Napkin.create(req.body);
@@ -66,7 +66,7 @@ router.post('/new', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Edit form
+//  ADMIN ONLY: Edit form
 router.get('/edit/:id', authMiddleware, async (req, res) => {
   try {
     const napkin = await Napkin.findById(req.params.id);
@@ -76,7 +76,7 @@ router.get('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Update napkin
+//  ADMIN ONLY: Update napkin
 router.post('/edit/:id', authMiddleware, async (req, res) => {
   try {
     await Napkin.findByIdAndUpdate(req.params.id, req.body);
@@ -86,7 +86,7 @@ router.post('/edit/:id', authMiddleware, async (req, res) => {
   }
 });
 
-// 🔐 ADMIN ONLY: Delete napkin
+//  ADMIN ONLY: Delete napkin
 router.post('/delete/:id', authMiddleware, async (req, res) => {
   try {
     await Napkin.findByIdAndDelete(req.params.id);
