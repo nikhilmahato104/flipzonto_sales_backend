@@ -66,7 +66,7 @@ const allowedOrigins = [
   'https://b-to-b-apixvuzum.onrender.com',
   'https://fzt-api-frilu457.onrender.com',
   'https://sales-manpanel-react-darkhower.netlify.app',
-
+  'https://admin.flipzonto.com',
 ];
 
 
