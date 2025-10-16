@@ -68,6 +68,7 @@ const allowedOrigins = [
   'https://fzt-api-frilu457.onrender.com',
   'https://sales-manpanel-react-darkhower.netlify.app',
   'https://admin.flipzonto.com',
+'https://flipzonto-sales-backend.onrender.com'
 
 ];
 
